@@ -10,4 +10,7 @@ public class TeamSO : ScriptableObject
 
     [SerializeField] private Color teamColor;
     public Color TeamColor { get => teamColor; }
+
+    [SerializeField] private List<TankParametersSO> tankList;
+    public List<TankParametersSO> TankList { get => tankList; }
 }
