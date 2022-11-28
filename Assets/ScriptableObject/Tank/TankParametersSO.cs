@@ -20,6 +20,9 @@ public class TankParametersSO : ScriptableObject
     [SerializeField] private float respawnTime;
     public float RespawnTime { get => respawnTime; }
 
+    [SerializeField] private PathFindingSO pathFinding;
+    public PathFindingSO PathFinding { get => pathFinding; }
+
     /*
     Scale
 

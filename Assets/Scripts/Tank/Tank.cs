@@ -10,7 +10,12 @@ public class Tank : MonoBehaviour
     [SerializeField] private GameObject completeShell;
     [SerializeField] private GameObject dustTrail;
     [SerializeField] private GameObject tankExplosion;
-    [SerializeField] private Transform ShootSocket;
+    [SerializeField] private Transform shootSocket;
+
+    /* test pathfinding so */
+    public Transform targetPosition;
+    public Grid grid;
+    /* ------------------- */
 
     private TankParametersSO _tankParametersSO;
     private Transform _transform;
@@ -22,6 +27,10 @@ public class Tank : MonoBehaviour
     {
         _tankParametersSO = pTankParametersSO;
         _life = pTankParametersSO.MaxLife;
+
+        /* test pathfinding so */
+        _tankParametersSO.PathFinding.grid = grid;
+        /* ------------------- */
     }
 
     private void Awake()
@@ -29,44 +38,40 @@ public class Tank : MonoBehaviour
         _transform = gameObject.transform;
     }
 
+    private void Start()
+    {
+    }
+
     private void Update()
     {
-
         if (Input.GetKeyDown(KeyCode.A))
         {
-            Debug.Log("UwU");
             Shoot();
         }
+        /* test pathfinding so */
+        SetPath(new Queue<Vector3>(_tankParametersSO.PathFinding.FindPath(_transform.position, targetPosition.position)));
+        /* ------------------- */
     }
 
-    public void Move()
+    public void SetPath(Queue<Vector3> lstWaypoint)
     {
-        _transform.position += _transform.forward * _tankParametersSO.Speed * Time.deltaTime;
     }
 
-    private void SetPath(Vector3 destination)
+    private void Move(Vector3 target)
     {
-        // Queue<Vector3> waypoints = Pathfinding(_transform.position, destination);
-        // MoveTo(waypoints.Dequeue());
     }
 
-    public void MoveTo(Vector3 destination)
+    private void MoveForward()
     {
-        // TODO
     }
 
-    public void Rotate(float angle, Vector2 targetDir)
+    private void Turn(float angle, Vector2 targetDir)
     {
-        _transform.Rotate(new Vector3(0, 0, (_tankParametersSO.RotationSpeed * -Mathf.Sign(angle)) * Time.deltaTime));
-        if (Mathf.Abs(angle) < Mathf.Abs(Vector2.SignedAngle(targetDir, _transform.up)))
-        {
-            _transform.up = targetDir;
-        }
     }
 
     public void Shoot()
     {
-        var bullet = Instantiate(completeShell, ShootSocket,true);
+        var bullet = Instantiate(completeShell, shootSocket, true);
         //bullet.transform.position = Vector3.MoveTowards(bullet.transform.position, bullet.transform.position + bullet.transform.forward, 10 * Time.deltaTime);
     }
 
