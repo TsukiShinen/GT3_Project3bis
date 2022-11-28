@@ -68,6 +68,7 @@ public enum EGameState
 {
     START,
     MENU,
+    GAMEPLAY,
     NONE
 }
 
