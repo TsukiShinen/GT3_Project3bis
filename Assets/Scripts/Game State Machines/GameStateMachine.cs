@@ -52,7 +52,6 @@ public class GameStateMachine : MonoBehaviour
         currentGState = nextState;
         CurrentGState.StartState();
     }
-
     #endregion
 
     #endregion
