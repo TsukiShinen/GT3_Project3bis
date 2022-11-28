@@ -11,7 +11,7 @@ public class GameStateMachine : MonoBehaviour
     #endregion
 
     #region Properties
-    public BaseGameState CurrentGState => lstGStates.Find(gs => gs.state == currentGState ).machine;
+    public BaseGameState CurrentGState => lstGStates.Find(gs => gs.state == currentGState).machine;
     public EGameState CurrentStateType => currentGState;
     public EGameState LastGState { get; set; }
     #endregion
@@ -21,7 +21,6 @@ public class GameStateMachine : MonoBehaviour
     #region Start And Init
     private void Start()
     {
-        lstGStates = new List<GameState>();
         SubGStateInit();
         CurrentGState.StartState();
     }
