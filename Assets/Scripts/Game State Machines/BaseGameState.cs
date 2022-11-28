@@ -1,4 +1,7 @@
-﻿public abstract class BaseGameState
+﻿using UnityEngine;
+
+[CreateAssetMenu(fileName = "GameState", menuName = "GameState/Base")]
+public abstract class BaseGameState : ScriptableObject
 {
     #region Fields
     protected EGameState _state = EGameState.NONE;

@@ -1,17 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GameStateMachine : MonoBehaviour
 {
     #region fields
-    private Dictionary<EGameState, BaseGameState> _statesGDict = new Dictionary<EGameState, BaseGameState>();
+    [SerializeField] private List<GameState> lstGStates;
 
-    private EGameState _currentGState;
+    [SerializeField] private EGameState currentGState;
     #endregion
 
     #region Properties
-    public BaseGameState CurrentGState => _statesGDict[_currentGState];
-    public EGameState CurrentStateType => _currentGState;
+    public BaseGameState CurrentGState => lstGStates.Find(gs => gs.state == currentGState ).machine;
+    public EGameState CurrentStateType => currentGState;
     public EGameState LastGState { get; set; }
     #endregion
 
@@ -20,20 +21,17 @@ public class GameStateMachine : MonoBehaviour
     #region Start And Init
     private void Start()
     {
-        _statesGDict = new Dictionary<EGameState, BaseGameState>();
+        lstGStates = new List<GameState>();
         SubGStateInit();
         CurrentGState.StartState();
     }
 
     private void SubGStateInit()
     {
-        var startState = new StartGameState();
-        startState.Init(this, EGameState.START);
-        _statesGDict.Add(EGameState.START, startState);
-
-        var menuState = new MenuGameState();
-        menuState.Init(this, EGameState.MENU);
-        _statesGDict.Add(EGameState.MENU, menuState);
+        foreach (var gState in lstGStates)
+        {
+            gState.machine.Init(this, gState.state);
+        }
 
     }
     #endregion
@@ -52,13 +50,20 @@ public class GameStateMachine : MonoBehaviour
     public void ChangeState(EGameState nextState,bool switchSong)
     {
         CurrentGState.LeaveState();
-        _currentGState = nextState;
+        currentGState = nextState;
         CurrentGState.StartState();
     }
 
     #endregion
 
     #endregion
+}
+
+[Serializable]
+public struct GameState
+{
+    public EGameState state;
+    public BaseGameState machine;
 }
 
 public enum EGameState

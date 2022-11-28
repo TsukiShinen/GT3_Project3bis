@@ -1,4 +1,7 @@
-﻿public class StartGameState : BaseGameState
+﻿using UnityEngine;
+
+[CreateAssetMenu(fileName = "GameState", menuName = "GameState/Start")]
+public class StartGameState : BaseGameState
 {
     #region fileds
 
