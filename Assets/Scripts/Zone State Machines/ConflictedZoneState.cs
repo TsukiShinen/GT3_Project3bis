@@ -14,12 +14,16 @@ public class ConflictedZoneState : BaseZoneState
     #region Methods   
     public override void StartState()
     {
-       
+        Debug.Log("Conflicted");
     }
 
     public override void UpdateState()
     {
-
+        // Changing state
+        if (_machine.TeamsTanksInZone.Count == 0)
+            _machine.ChangeState(EZoneState.NEUTRAL);
+        if (_machine.TeamsTanksInZone.Count == 1)
+            _machine.ChangeState(EZoneState.CAPTURING);
     }
 
     public override void FixedUpdateState()
@@ -29,7 +33,7 @@ public class ConflictedZoneState : BaseZoneState
 
     public override void LeaveState()
     {
-        _machine.LastZState = EZoneState.NEUTRAL;
+        _machine.LastZState = EZoneState.CONFLICTED;
     }
 
     #endregion

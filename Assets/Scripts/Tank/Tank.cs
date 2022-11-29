@@ -32,6 +32,8 @@ public class Tank : MonoBehaviour
     private Vector3 _positionToGo;
     private Queue<Vector3> _waypoints;
 
+    
+    public TeamSO team;
 
     public void InitialLoad(TankParametersSO pTankParametersSO)
     {

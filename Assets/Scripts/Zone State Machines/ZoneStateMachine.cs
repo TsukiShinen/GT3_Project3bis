@@ -6,8 +6,11 @@ public class ZoneStateMachine : MonoBehaviour
 {
     #region fields
     [SerializeField] private List<ZoneState> lstZStates;
-
     [SerializeField] private EZoneState currentZState;
+
+    public TeamSO teamScoring;
+    public float score;
+    public Dictionary<TeamSO, int> TeamsTanksInZone;
     #endregion
 
     #region Properties
@@ -21,6 +24,8 @@ public class ZoneStateMachine : MonoBehaviour
     #region Start And Init
     private void Start()
     {
+        score = 0;
+        TeamsTanksInZone = new Dictionary<TeamSO, int>();
         SubGStateInit();
         CurrentZState.StartState();
     }
@@ -56,11 +61,34 @@ public class ZoneStateMachine : MonoBehaviour
     #endregion
     private void OnTriggerEnter(Collider other)
     {
-        ChangeState(EZoneState.CAPTURING);
+        if (!other.CompareTag("Tank")) return;
+
+        var tank = other.GetComponent<Tank>();
+
+        if (TeamsTanksInZone.ContainsKey(tank.team))
+        {
+            TeamsTanksInZone[tank.team]++;
+        }
+        else
+        {
+            TeamsTanksInZone.Add(tank.team, 1);
+        }
     }
     private void OnTriggerExit(Collider other)
     {
-        ChangeState(EZoneState.NEUTRAL);
+        if (!other.CompareTag("Tank")) return;
+
+        var tank = other.GetComponent<Tank>();
+
+        if (TeamsTanksInZone.ContainsKey(tank.team))
+        {
+            TeamsTanksInZone[tank.team]--;
+
+            if (TeamsTanksInZone[tank.team] == 0)
+            {
+                TeamsTanksInZone.Remove(tank.team);
+            }
+        }
     }
     #endregion
 }
