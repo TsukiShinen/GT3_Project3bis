@@ -13,4 +13,7 @@ public class TeamSO : ScriptableObject
 
     [SerializeField] private List<TankParametersSO> tankList;
     public List<TankParametersSO> TankList { get => tankList; }
+
+    [SerializeField] private List<Transform> spawnPoint;
+    public List<Transform> SpawnPoint { get => spawnPoint; }
 }

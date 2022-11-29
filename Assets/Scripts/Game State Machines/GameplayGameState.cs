@@ -26,7 +26,6 @@ public class GameplayGameState : BaseGameState
     {
 
     }
-
     public override void LeaveState()
     {
         _machine.LastGState = EGameState.START;

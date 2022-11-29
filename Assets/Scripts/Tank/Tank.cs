@@ -13,11 +13,6 @@ public class Tank : MonoBehaviour
     [SerializeField] private GameObject tankExplosion;
     [SerializeField] private Transform shootSocket;
 
-    /* test pathfinding so */
-    public Transform targetPosition;
-    public Grid grid;
-    /* ------------------- */
-
     public TankParametersSO TankParametersSO;
 
     private Transform _transform;
@@ -41,10 +36,6 @@ public class Tank : MonoBehaviour
         TankParametersSO = pTankParametersSO;
         _life = pTankParametersSO.MaxLife;
 
-        /* test pathfinding so */
-        TankParametersSO.PathFinding.grid = grid;
-        /* ------------------- */
-
         _positionToGo = transform.position;
         _waypoints = new Queue<Vector3>();
     }
@@ -61,10 +52,6 @@ public class Tank : MonoBehaviour
             _canShoot = false;
             StartCoroutine(Shoot());
         }
-
-        /* test pathfinding so */
-        //SetPath(new Queue<Vector3>(_tankParametersSO.PathFinding.FindPath(_transform.position, targetPosition.position)));
-        /* ------------------- */
 
         if (ArrivedAtWaypoint && _waypoints.Count > 0)
         {
@@ -109,10 +96,6 @@ public class Tank : MonoBehaviour
     private void Turn(float angle, Vector2 targetDir)
     {
         transform.Rotate(new Vector3(0, (TankParametersSO.Speed * Mathf.Sign(angle)) * Time.deltaTime, 0));
-        //if (Mathf.Abs(angle) < Mathf.Abs(Vector2.SignedAngle(targetDir, transform.up)))
-        //{
-        //    transform.up = targetDir;
-        //}
     }
 
     public IEnumerator Shoot()
