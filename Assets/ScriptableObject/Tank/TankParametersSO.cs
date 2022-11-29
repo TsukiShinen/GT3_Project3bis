@@ -23,6 +23,9 @@ public class TankParametersSO : ScriptableObject
     [SerializeField] private PathFindingSO pathFinding;
     public PathFindingSO PathFinding { get => pathFinding; }
 
+    [SerializeField] private GameObject tankWaifu;
+    public GameObject TankWaifu { get => tankWaifu; }
+
     /*
     Scale
 
