@@ -16,6 +16,7 @@ public class Grid : MonoBehaviour
 
     public bool EnableGizmos = false;
 
+    public List<Node> path;
     void Awake()
     {
         nodeDiameter = nodeRadius * 2;
@@ -76,8 +77,6 @@ public class Grid : MonoBehaviour
         int y = Mathf.RoundToInt((gridSizeY - 1) * percentY);
         return grid[x, y];
     }
-
-    public List<Node> path;
     void OnDrawGizmos()
     {
         if (!EnableGizmos) { return; }
@@ -88,6 +87,7 @@ public class Grid : MonoBehaviour
             foreach (Node n in grid)
             {
                 Gizmos.color = (n.walkable) ? Color.white : Color.red;
+
                 if (path != null)
                     if (path.Contains(n))
                         Gizmos.color = Color.black;

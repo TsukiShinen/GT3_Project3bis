@@ -65,7 +65,6 @@ public class Tank : MonoBehaviour
 
         if (ArrivedAtWaypoint && _waypoints.Count > 0)
         {
-            Debug.Log("test");
             _positionToGo = _waypoints.Dequeue();
         }
         isMoving = false;
