@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 [CreateAssetMenu(fileName ="New Tank Settings",menuName ="Others/TankParametersSO")]
 public class TankParametersSO : ScriptableObject

@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 [CreateAssetMenu(fileName = "AStarSO", menuName = "PathFinding/AStarSO", order = 0)]
 public class AStarSO : PathFindingSO
 {
-    public override List<Vector3> FindPath(Vector3 startPos, Vector3 targetPos)
+    public override List<Vector3> FindPath(Vector3 startPos, Vector3 targetPos, NavMeshAgent navMeshAgent = null)
     {
         Node startNode = grid.NodeFromWorldPoint(startPos);
         Node targetNode = grid.NodeFromWorldPoint(targetPos);

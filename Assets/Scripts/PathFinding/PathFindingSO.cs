@@ -1,12 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public abstract class PathFindingSO : ScriptableObject
 {
     public Grid grid;
-
-    public abstract List<Vector3> FindPath(Vector3 startPos, Vector3 targetPos);
+    public abstract List<Vector3> FindPath(Vector3 Position, Vector3 targetPos, NavMeshAgent navMeshAgent = null);
 
     public void RetracePath(Node startNode, Node endNode)
     {

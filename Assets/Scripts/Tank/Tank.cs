@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.Tilemaps;
 using UnityEngine;
+using UnityEngine.AI;
 using static UnityEngine.GraphicsBuffer;
 
 public class Tank : MonoBehaviour
@@ -30,6 +31,9 @@ public class Tank : MonoBehaviour
     public TeamSO team;
     private bool _canShoot = true;
 
+    public NavMeshAgent navMeshAgent;
+
+    public Vector3 target;
 
     public void InitialLoad(TankParametersSO pTankParametersSO)
     {
@@ -43,10 +47,16 @@ public class Tank : MonoBehaviour
     private void Awake()
     {
         _transform = gameObject.transform;
+        navMeshAgent = GetComponent<NavMeshAgent>();
     }
 
     private void Update()
     {
+        if(target != Vector3.zero)
+        {
+            SetPath(new Queue<Vector3>(TankParametersSO.PathFinding.FindPath(transform.position, target, navMeshAgent)));
+            target = Vector3.zero;
+        }
         if (Input.GetKeyDown(KeyCode.Space) && _canShoot)
         {
             _canShoot = false;
