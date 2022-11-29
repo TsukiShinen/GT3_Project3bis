@@ -35,10 +35,18 @@ public class Tank : MonoBehaviour
 
     public Vector3 target;
 
-    public void InitialLoad(TankParametersSO pTankParametersSO)
+    public void InitialLoad(TankParametersSO pTankParametersSO, TeamSO pteam)
     {
         TankParametersSO = pTankParametersSO;
         _life = pTankParametersSO.MaxLife;
+        team = pteam;
+
+        MeshRenderer[] renderers = tankMesh.GetComponentsInChildren<MeshRenderer>();
+
+        for (int i = 0; i < renderers.Length; i++)
+        {
+            renderers[i].material.color = team.TeamColor;
+        }
 
         _positionToGo = transform.position;
         _waypoints = new Queue<Vector3>();
