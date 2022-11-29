@@ -9,10 +9,12 @@ public class Grid : MonoBehaviour
     public LayerMask unwalkableMask;
     public Vector2 gridWorldSize;
     public float nodeRadius;
-    Node[,] grid;
+    public Node[,] grid;
 
-    float nodeDiameter;
-    int gridSizeX, gridSizeY;
+    private float nodeDiameter;
+    private int gridSizeX, gridSizeY;
+
+    public bool EnableGizmos = false;
 
     void Awake()
     {
@@ -78,6 +80,7 @@ public class Grid : MonoBehaviour
     public List<Node> path;
     void OnDrawGizmos()
     {
+        if (!EnableGizmos) { return; }
         Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x, 1, gridWorldSize.y));
 
         if (grid != null)

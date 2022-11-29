@@ -35,13 +35,13 @@ public class GameManagerSO : ScriptableObject
         for (int i = 0; i < team1.TankList.Count; i++)
         {
             team1.TankList[i].PathFinding.grid = grid;
-            var tankObject = Instantiate(tankPrefab, spawnTeam1.transform);
+            var tankObject = Instantiate(tankPrefab, spawnTeam1.transform.position, spawnTeam1.transform.rotation);
             tankObject.GetComponent<Tank>().InitialLoad(team1.TankList[i]);
         }
         for (int i = 0; i < team2.TankList.Count; i++)
         {
             team2.TankList[i].PathFinding.grid = grid;
-            var tankObject = Instantiate(tankPrefab, spawnTeam2.transform);
+            var tankObject = Instantiate(tankPrefab, spawnTeam1.transform.position, spawnTeam1.transform.rotation);
             tankObject.GetComponent<Tank>().InitialLoad(team2.TankList[i]);
         }
     }
