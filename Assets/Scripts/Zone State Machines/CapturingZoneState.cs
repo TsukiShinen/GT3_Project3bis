@@ -42,6 +42,9 @@ public class CapturingZoneState : BaseZoneState
             _machine.score = 0;
             _machine.teamScoring = team;
         }
+
+        _machine.zoneCircle.color = _machine.teamScoring.TeamColor;
+        _machine.zoneCircle.transform.localScale = new Vector3(_machine.score / 100f, _machine.score / 100f, 1);
     }
 
     public override void FixedUpdateState()

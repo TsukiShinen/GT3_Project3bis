@@ -12,8 +12,8 @@ public class GameManagerSO : ScriptableObject
     public Dictionary<TeamSO, int> Scores;
     public float timer;
 
-    [SerializeField] private TeamSO team1;
-    [SerializeField] private TeamSO team2;
+    public TeamSO team1;
+    public TeamSO team2;
 
     [SerializeField] private GameObject tankPrefab;
 

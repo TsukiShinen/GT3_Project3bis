@@ -7,6 +7,7 @@ public class ZoneStateMachine : MonoBehaviour
     #region fields
     [SerializeField] private List<ZoneState> lstZStates;
     [SerializeField] private EZoneState currentZState;
+    public SpriteRenderer zoneCircle;
 
     public TeamSO teamScoring;
     public float score;
