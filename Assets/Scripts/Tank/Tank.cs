@@ -32,8 +32,9 @@ public class Tank : MonoBehaviour
     private Vector3 _positionToGo;
     private Queue<Vector3> _waypoints;
 
-    
     public TeamSO team;
+    private bool _canShoot = true;
+
 
     public void InitialLoad(TankParametersSO pTankParametersSO)
     {
@@ -55,9 +56,10 @@ public class Tank : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.A))
+        if (Input.GetKeyDown(KeyCode.Space) && _canShoot)
         {
-            Shoot();
+            _canShoot = false;
+            StartCoroutine(Shoot());
         }
 
         /* test pathfinding so */
@@ -113,10 +115,19 @@ public class Tank : MonoBehaviour
         //}
     }
 
-    public void Shoot()
+    public IEnumerator Shoot()
     {
-        var bullet = Instantiate(completeShell, shootSocket, true);
-        //bullet.transform.position = Vector3.MoveTowards(bullet.transform.position, bullet.transform.position + bullet.transform.forward, 10 * Time.deltaTime);
+        var bullet = Instantiate(completeShell, shootSocket);
+
+        bullet.transform.SetParent(null);
+
+        var rbBullet = bullet.GetComponent<Rigidbody>();
+
+        rbBullet.velocity = TankParametersSO.ProjectileSpeed * shootSocket.forward;
+
+        yield return new WaitForSeconds(TankParametersSO.ShootCooldown);
+
+        _canShoot = true;
     }
 
     public void Death()

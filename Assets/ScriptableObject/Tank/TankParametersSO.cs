@@ -14,6 +14,9 @@ public class TankParametersSO : ScriptableObject
     [SerializeField] private float rotationSpeed;
     public float RotationSpeed { get => rotationSpeed; }
 
+    [SerializeField] private float projectileSpeed;
+    public float ProjectileSpeed { get => projectileSpeed; }
+
     [SerializeField] private float shootCooldown;
     public float ShootCooldown { get => shootCooldown; }
 
