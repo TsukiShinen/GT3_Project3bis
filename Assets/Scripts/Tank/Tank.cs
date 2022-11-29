@@ -13,6 +13,7 @@ public class Tank : MonoBehaviour
     [SerializeField] private GameObject dustTrail;
     [SerializeField] private GameObject tankExplosion;
     [SerializeField] private Transform shootSocket;
+    [SerializeField] private Transform userSocket;
 
     public TankParametersSO TankParametersSO;
 
@@ -47,6 +48,9 @@ public class Tank : MonoBehaviour
         {
             renderers[i].material.color = team.TeamColor;
         }
+
+        if(TankParametersSO.TankUser != null)
+            Instantiate(TankParametersSO.TankUser, userSocket);
 
         _positionToGo = transform.position;
         _waypoints = new Queue<Vector3>();
