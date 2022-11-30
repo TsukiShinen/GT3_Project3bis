@@ -27,6 +27,7 @@ public class CapturedZoneState : BaseZoneState
        _machine.flags2.enabled = true;
        _machine.flags1.material.color = _machine.teamScoring.TeamColor;
        _machine.flags2.material.color = _machine.teamScoring.TeamColor;
+       _machine.flagIcon.color = _machine.teamScoring.TeamColor;
     }
 
     public override void UpdateState()
@@ -73,6 +74,7 @@ public class CapturedZoneState : BaseZoneState
         _machine.flags1.enabled = false;
         _machine.flags2.enabled = false;
         _machine.LastZState = EZoneState.CAPTURED;
+        _machine.flagIcon.color = Color.black;
     }
 
     #endregion

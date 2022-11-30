@@ -9,6 +9,7 @@ public class ZoneStateMachine : MonoBehaviour
     [SerializeField] private EZoneState currentZState;
     public MeshRenderer flags1;
     public MeshRenderer flags2;
+    public SpriteRenderer flagIcon;
     public SpriteRenderer zoneCircle;
 
     public TeamSO teamScoring;

@@ -32,5 +32,15 @@ public class MenuGameState : BaseGameState
         _machine.LastGState = EGameState.MENU;
     }
 
+    public void PlayButton()
+    {
+        _machine.ChangeState(EGameState.GAMEPLAY);
+    }
+
+    public void QuitButton()
+    {
+        Application.Quit();
+    }
+
     #endregion
 }

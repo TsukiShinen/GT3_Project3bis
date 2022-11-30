@@ -34,7 +34,7 @@ public class Tank : MonoBehaviour
     private bool _canShoot = true;
 
     public NavMeshAgent navMeshAgent;
-
+    public Rigidbody tankRigidbody;
     public Vector3 target;
 
     public Slider m_Slider;
@@ -76,6 +76,7 @@ public class Tank : MonoBehaviour
     {
         _transform = gameObject.transform;
         navMeshAgent = GetComponent<NavMeshAgent>();
+        tankRigidbody = gameObject.GetComponent<Rigidbody>();
     }
 
     private void Update()
@@ -110,7 +111,7 @@ public class Tank : MonoBehaviour
     {
         if (IsDead) return;
 
-        transform.position += _transform.forward * TankParametersSO.Speed * verticalDirection * Time.deltaTime;
+        _transform.position += _transform.forward * TankParametersSO.Speed * verticalDirection * Time.deltaTime;
     }
 
     public void MoveTo(Vector3 target)
@@ -180,7 +181,6 @@ public class Tank : MonoBehaviour
 
         SetHealthUI();
     }
-
 
     public void SetHealthUI()
     {

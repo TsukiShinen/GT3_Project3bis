@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameStateMachine : MonoBehaviour
 {
@@ -46,7 +47,7 @@ public class GameStateMachine : MonoBehaviour
         CurrentGState.FixedUpdateState();
     }
 
-    public void ChangeState(EGameState nextState,bool switchSong)
+    public void ChangeState(EGameState nextState)
     {
         CurrentGState.LeaveState();
         currentGState = nextState;
