@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using DefaultNamespace;
+using UnityEngine;
 
 [CreateAssetMenu(fileName = "ZoneState", menuName = "ZoneState/Captured")]
 public class CapturedZoneState : BaseZoneState
@@ -6,6 +8,7 @@ public class CapturedZoneState : BaseZoneState
     #region fileds
 
     [SerializeField] private GameManagerSO gameManagerSo;
+    [SerializeField] private GameParametersSO gameParametersSo;
 
     private float _timer;
     #endregion
@@ -19,22 +22,43 @@ public class CapturedZoneState : BaseZoneState
     {
        Debug.Log("Captured");
        _timer = 0;
+       _machine.score = gameParametersSo.timeTakeZone;
+       _machine.flags1.enabled = false;
+       _machine.flags2.enabled = false;
     }
 
     public override void UpdateState()
     {
         // Changing state
-        if (_machine.TeamsTanksInZone.Count == 0)
+        if (_machine.score <= 0)
             _machine.ChangeState(EZoneState.NEUTRAL);
         if (_machine.TeamsTanksInZone.Count > 1)
             _machine.ChangeState(EZoneState.CONFLICTED);
 
-        _timer += Time.deltaTime;
-        if (_timer >= 1)
-        {
-            _timer = 0;
-            gameManagerSo.Scores[_machine.teamScoring]++;
+        Scoring();
+
+        if (_machine.TeamsTanksInZone.Count == 0)
+        { 
+            _machine.score -= Time.deltaTime / 2f;
         }
+        else
+        {
+            if (_machine.score <= gameParametersSo.timeTakeZone)
+            {
+                _machine.score += Time.deltaTime;
+            }
+        }
+        
+        _machine.zoneCircle.color = _machine.teamScoring.TeamColor;
+        _machine.zoneCircle.transform.localScale = new Vector3(_machine.score / gameParametersSo.timeTakeZone, _machine.score / gameParametersSo.timeTakeZone, 1);
+    }
+
+    private void Scoring()
+    {
+        _timer += Time.deltaTime;
+        if (!(_timer >= 1)) return;
+        _timer = 0;
+        gameManagerSo.Scores[_machine.teamScoring]++;
     }
 
     public override void FixedUpdateState()

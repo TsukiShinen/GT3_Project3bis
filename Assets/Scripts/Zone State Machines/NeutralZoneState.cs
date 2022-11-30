@@ -24,11 +24,6 @@ public class NeutralZoneState : BaseZoneState
             _machine.ChangeState(EZoneState.CAPTURING);
         if (_machine.TeamsTanksInZone.Count > 1)
             _machine.ChangeState(EZoneState.CONFLICTED);
-
-        if (_machine.score != 0f)
-        {
-            _machine.score -= Time.deltaTime / 2f;
-        }
     }
 
     public override void FixedUpdateState()

@@ -7,6 +7,8 @@ public class ZoneStateMachine : MonoBehaviour
     #region fields
     [SerializeField] private List<ZoneState> lstZStates;
     [SerializeField] private EZoneState currentZState;
+    public MeshRenderer flags1;
+    public MeshRenderer flags2;
     public SpriteRenderer zoneCircle;
 
     public TeamSO teamScoring;
@@ -29,6 +31,9 @@ public class ZoneStateMachine : MonoBehaviour
         TeamsTanksInZone = new Dictionary<TeamSO, int>();
         SubGStateInit();
         CurrentZState.StartState();
+
+        flags1.enabled = false;
+        flags2.enabled = false;
     }
 
     private void SubGStateInit()
