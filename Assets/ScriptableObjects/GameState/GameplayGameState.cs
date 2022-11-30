@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using BehaviorDesigner.Runtime.Tasks.Unity.UnityGameObject;
 using State_Machines;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -22,7 +23,7 @@ namespace ScriptableObjects.GameState
         #region Methods   
         public override void StartState()
         {
-            SceneManager.LoadScene("ScenePropreWola");
+            //SceneManager.LoadScene("ScenePropreWola");
             _mainCamera = Camera.main;
             gameManagerSo.Init();
         }
@@ -46,18 +47,21 @@ namespace ScriptableObjects.GameState
                     _mainCamera.transform.SetParent(null);
             }
             tank.isDead = true;
+
+            var explosion = Instantiate(tank.tankExplosion, tank.transform);
+            explosion.transform.SetParent(null);
+            Destroy(explosion, 2);
+
             tank.gameObject.SetActive(false);
 
-            Instantiate(tank.tankExplosion, tank.transform);
-
-            yield return new WaitForSeconds(tank.tankParametersSo.RespawnTime);
+            yield return new WaitForSeconds(tank.tankParametersSO.RespawnTime);
 
             tank.gameObject.SetActive(true);
             var tankTransform = tank.transform;
             tankTransform.position = tank.spawnPosition;
             tankTransform.rotation = tank.spawnRotation;
 
-            tank.life = tank.tankParametersSo.MaxLife;
+            tank.life = tank.tankParametersSO.MaxLife;
             tank.SetHealthUI();
 
             tank.canShoot = true;

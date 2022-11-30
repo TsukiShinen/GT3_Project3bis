@@ -41,9 +41,11 @@ namespace ScriptableObjects
                 var tankObject = Instantiate(tankPrefab, spawnTeam1.transform.position + spawnTeam1.transform.right * 3 * i, spawnTeam1.transform.rotation);
                 tankObject.GetComponent<Tank>().InitialLoad(team1.TankList[i], team1, this);
 
-                if(i > 0) continue;
+                Debug.Log(tankObject.name);
+
+                if (i > 0) continue;
                 tankPlayer = tankObject.GetComponent<Tank>();
-                tankPlayer.tankParametersSo.PathFinding = null;
+                tankPlayer.tankParametersSO.PathFinding = null;
                 var camera = Camera.main;
                 if (camera == null) continue;
                 var cameraTransform = camera.transform;

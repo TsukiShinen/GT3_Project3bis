@@ -17,7 +17,6 @@ namespace ScriptableObjects.ZoneState
         #region Methods   
         public override void StartState()
         {
-            Debug.Log("Neutral");
         }
 
         public override void UpdateState()

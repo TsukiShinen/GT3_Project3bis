@@ -19,7 +19,7 @@ public class Tank : MonoBehaviour
 
     public GameObject tankExplosion;
 
-    public TankParametersSO tankParametersSo;
+    public TankParametersSO tankParametersSO;
 
     private Transform _transform;
     public float life;
@@ -54,7 +54,7 @@ public class Tank : MonoBehaviour
 
     public void InitialLoad(TankParametersSO pTankParametersSo, TeamSO pTeam, GameManagerSO pGameManagerSo)
     {
-        tankParametersSo = ScriptableObject.Instantiate(pTankParametersSo);
+        tankParametersSO = ScriptableObject.Instantiate(pTankParametersSo);
         life = pTankParametersSo.MaxLife;
         team = pTeam;
         _gameManager = pGameManagerSo;
@@ -91,11 +91,11 @@ public class Tank : MonoBehaviour
 
         if (target != Vector3.zero)
         {
-            SetPath(new Queue<Vector3>(tankParametersSo.PathFinding.FindPath(_transform.position, target)));
+            SetPath(new Queue<Vector3>(tankParametersSO.PathFinding.FindPath(_transform.position, target)));
             target = Vector3.zero;
         }
-
-        if (!tankParametersSo.PathFinding) return;
+        Debug.Log(tankParametersSO.name);
+        if (!tankParametersSO.PathFinding) return;
         if (ArrivedAtWaypoint && _waypoints.Count > 0)
         {
             _positionToGo = _waypoints.Dequeue();
@@ -117,7 +117,7 @@ public class Tank : MonoBehaviour
     {
         if (isDead) return;
 
-        _transform.position += _transform.forward * (tankParametersSo.Speed * verticalDirection * Time.deltaTime);
+        _transform.position += _transform.forward * (tankParametersSO.Speed * verticalDirection * Time.deltaTime);
     }
 
     public void MoveTo(Vector3 pTarget)
@@ -148,7 +148,7 @@ public class Tank : MonoBehaviour
         if (isDead) return;
 
         var transform1 = transform;
-        transform1.position += transform1.forward * (tankParametersSo.Speed * Time.deltaTime);
+        transform1.position += transform1.forward * (tankParametersSO.Speed * Time.deltaTime);
         isMoving = true;
     }
 
@@ -156,7 +156,7 @@ public class Tank : MonoBehaviour
     {
         if (isDead) return;
 
-        transform.Rotate(new Vector3(0, (tankParametersSo.RotationSpeed * Mathf.Sign(angle)) * Time.deltaTime, 0));
+        transform.Rotate(new Vector3(0, (tankParametersSO.RotationSpeed * Mathf.Sign(angle)) * Time.deltaTime, 0));
     }
 
     public void Shoot()
@@ -178,9 +178,9 @@ public class Tank : MonoBehaviour
 
         var rbBullet = bullet.GetComponent<Rigidbody>();
 
-        rbBullet.velocity = tankParametersSo.ProjectileSpeed * shootSocket.forward;
+        rbBullet.velocity = tankParametersSO.ProjectileSpeed * shootSocket.forward;
 
-        yield return new WaitForSeconds(tankParametersSo.ShootCooldown);
+        yield return new WaitForSeconds(tankParametersSO.ShootCooldown);
 
         canShoot = true;
     }
@@ -196,8 +196,8 @@ public class Tank : MonoBehaviour
 
     public void SetHealthUI()
     {
-        slider.value = life / tankParametersSo.MaxLife * 100;
-        fillImage.color = Color.Lerp(zeroHealthColor, fullHealthColor, life / tankParametersSo.MaxLife);
+        slider.value = life / tankParametersSO.MaxLife * 100;
+        fillImage.color = Color.Lerp(zeroHealthColor, fullHealthColor, life / tankParametersSO.MaxLife);
 
         if (life <= 0)
         {
@@ -207,7 +207,7 @@ public class Tank : MonoBehaviour
 
     public void Death()
     {
-        gameManager.TankDeath(this);
+        _gameManager.TankDeath(this);
         audioSO.PlaySFX("tank_explode");
     }
 }
