@@ -18,8 +18,8 @@ public class GameManagerSO : ScriptableObject
     public TeamSO team2;
 
     [SerializeField] private GameObject tankPrefab;
-    [SerializeField] private Vector3 camPos;
-    [SerializeField] private Vector3 tilt;
+    public Vector3 CamPos;
+    public Vector3 Tilt;
 
     public bool TimerFished => timer <= 0;
 
@@ -47,8 +47,8 @@ public class GameManagerSO : ScriptableObject
             tankPlayer.TankParametersSO.PathFinding = null;
             var _cam = Camera.main;
             _cam.transform.SetParent(tankObject.transform);
-            _cam.transform.localPosition = camPos;
-            _cam.transform.localRotation = Quaternion.Euler(tilt);
+            _cam.transform.localPosition = CamPos;
+            _cam.transform.localRotation = Quaternion.Euler(Tilt);
         }
 
         for (int i = 0; i < team2.TankList.Count; i++)
