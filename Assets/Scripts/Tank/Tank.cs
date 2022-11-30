@@ -13,6 +13,7 @@ public class Tank : MonoBehaviour
     [SerializeField] private GameObject tankMesh;
     [SerializeField] private GameObject completeShell;
     [SerializeField] private Transform shootSocket;
+    [SerializeField] private AudioSO audioSO;
 
     [SerializeField] private SpriteRenderer icon;
 
@@ -81,6 +82,7 @@ public class Tank : MonoBehaviour
         _transform = gameObject.transform;
         navMeshAgent = GetComponent<NavMeshAgent>();
         tankRigidbody = gameObject.GetComponent<Rigidbody>();
+        audioSO.Play("tank_moving");
     }
 
     private void Update()
@@ -168,6 +170,8 @@ public class Tank : MonoBehaviour
     {
         canShoot = false;
 
+        audioSO.PlaySFX("shoot");
+
         var bullet = Instantiate(completeShell, shootSocket);
 
         bullet.transform.SetParent(null);
@@ -203,6 +207,7 @@ public class Tank : MonoBehaviour
 
     public void Death()
     {
-        _gameManager.TankDeath(this);
+        gameManager.TankDeath(this);
+        audioSO.PlaySFX("tank_explode");
     }
 }
