@@ -1,14 +1,17 @@
 using BehaviorDesigner.Runtime.Tasks;
 
-public class Shoot : Action
+namespace AddonBehaviourTree
 {
-	public override void OnStart()
+	public class Shoot : Action
 	{
+		public override void OnStart()
+		{
 		
-	}
+		}
 
-	public override TaskStatus OnUpdate()
-	{
-		return TaskStatus.Success;
+		public override TaskStatus OnUpdate()
+		{
+			return TaskStatus.Success;
+		}
 	}
 }

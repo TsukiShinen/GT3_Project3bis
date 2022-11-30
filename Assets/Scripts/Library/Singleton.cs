@@ -1,7 +1,7 @@
-﻿namespace Engine.Utils
-{
-	using UnityEngine;
+﻿using UnityEngine;
 
+namespace Library
+{
 	public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 	{
 
@@ -14,14 +14,12 @@
 		{
 			get
 			{
-				if (_instance == null)
-				{	
-					_instance = FindObjectOfType<T>();
+				if (_instance) return _instance;
+				_instance = FindObjectOfType<T>();
 
-					if (_instance == null)
-					{
-						throw new System.Exception(typeof(T) + " Trying to access a nulled instance of a singleton. Exiting.");
-					}
+				if (!_instance)
+				{
+					throw new System.Exception(typeof(T) + " Trying to access a null instance of a singleton. Exiting.");
 				}
 				return _instance;
 			}

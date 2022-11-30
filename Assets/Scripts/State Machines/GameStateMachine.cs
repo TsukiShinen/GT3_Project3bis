@@ -1,75 +1,77 @@
 ﻿using System;
 using System.Collections.Generic;
+using ScriptableObjects.GameState;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
-public class GameStateMachine : MonoBehaviour
+namespace State_Machines
 {
-    #region fields
-    [SerializeField] private List<GameState> lstGStates;
-
-    [SerializeField] private EGameState currentGState;
-    #endregion
-
-    #region Properties
-    public BaseGameState CurrentGState => lstGStates.Find(gs => gs.state == currentGState).machine;
-    public EGameState CurrentStateType => currentGState;
-    public EGameState LastGState { get; set; }
-    #endregion
-
-    #region Methods
-
-    #region Start And Init
-    private void Start()
+    public class GameStateMachine : MonoBehaviour
     {
-        SubGStateInit();
-        CurrentGState.StartState();
-    }
+        #region fields
+        [SerializeField] private List<GameState> lstGStates;
 
-    private void SubGStateInit()
-    {
-        foreach (var gState in lstGStates)
+        [SerializeField] private EGameState currentGState;
+        #endregion
+
+        #region Properties
+
+        private BaseGameState CurrentGState => lstGStates.Find(gs => gs.state == currentGState).machine;
+        public EGameState LastGState { get; set; }
+        #endregion
+
+        #region Methods
+
+        #region Start And Init
+        private void Start()
         {
-            gState.machine.Init(this, gState.state);
+            SubGStateInit();
+            CurrentGState.StartState();
         }
 
-    }
-    #endregion
+        private void SubGStateInit()
+        {
+            foreach (var gState in lstGStates)
+            {
+                gState.machine.Init(this);
+            }
 
-    #region RunTime
-    private void Update()
+        }
+        #endregion
+
+        #region RunTime
+        private void Update()
+        {
+            CurrentGState.UpdateState();
+        }
+
+        private void FixedUpdate()
+        {
+            CurrentGState.FixedUpdateState();
+        }
+
+        public void ChangeState(EGameState nextState)
+        {
+            CurrentGState.LeaveState();
+            currentGState = nextState;
+            CurrentGState.StartState();
+        }
+        #endregion
+
+        #endregion
+    }
+
+    [Serializable]
+    public struct GameState
     {
-        CurrentGState.UpdateState();
+        public EGameState state;
+        public BaseGameState machine;
     }
 
-    private void FixedUpdate()
+    public enum EGameState
     {
-        CurrentGState.FixedUpdateState();
+        START,
+        MENU,
+        GAMEPLAY,
+        NONE
     }
-
-    public void ChangeState(EGameState nextState)
-    {
-        CurrentGState.LeaveState();
-        currentGState = nextState;
-        CurrentGState.StartState();
-    }
-    #endregion
-
-    #endregion
 }
-
-[Serializable]
-public struct GameState
-{
-    public EGameState state;
-    public BaseGameState machine;
-}
-
-public enum EGameState
-{
-    START,
-    MENU,
-    GAMEPLAY,
-    NONE
-}
-

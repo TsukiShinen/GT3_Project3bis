@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace DefaultNamespace
+namespace ScriptableObjects
 {
     [CreateAssetMenu(fileName = "GameParametersSO", menuName = "Game/GameParametersSO", order = 0)]
     public class GameParametersSO : ScriptableObject

@@ -1,63 +1,62 @@
 using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 
 public class Grid : MonoBehaviour
 {
 
-    public LayerMask unwalkableMask;
+    public LayerMask unWalkableMask;
     public Vector2 gridWorldSize;
     public float nodeRadius;
-    public Node[,] grid;
+    private Node[,] _grid;
 
-    private float nodeDiameter;
-    private int gridSizeX, gridSizeY;
+    private float _nodeDiameter;
+    private int _gridSizeX, _gridSizeY;
 
-    public bool EnableGizmos = false;
+    public bool EnableGizmos { get; set; }
 
-    public List<Node> path;
-    void Awake()
+    public List<Node> Path;
+
+    private void Awake()
     {
-        nodeDiameter = nodeRadius * 2;
-        gridSizeX = Mathf.RoundToInt(gridWorldSize.x / nodeDiameter);
-        gridSizeY = Mathf.RoundToInt(gridWorldSize.y / nodeDiameter);
+        _nodeDiameter = nodeRadius * 2;
+        _gridSizeX = Mathf.RoundToInt(gridWorldSize.x / _nodeDiameter);
+        _gridSizeY = Mathf.RoundToInt(gridWorldSize.y / _nodeDiameter);
         CreateGrid();
     }
 
-    void CreateGrid()
+    private void CreateGrid()
     {
-        grid = new Node[gridSizeX, gridSizeY];
-        Vector3 worldBottomLeft = transform.position - Vector3.right * gridWorldSize.x / 2 - Vector3.forward * gridWorldSize.y / 2;
+        _grid = new Node[_gridSizeX, _gridSizeY];
+        var worldBottomLeft = transform.position - Vector3.right * gridWorldSize.x / 2 - Vector3.forward * gridWorldSize.y / 2;
 
-        for (int x = 0; x < gridSizeX; x++)
+        for (var x = 0; x < _gridSizeX; x++)
         {
-            for (int y = 0; y < gridSizeY; y++)
+            for (var y = 0; y < _gridSizeY; y++)
             {
-                Vector3 worldPoint = worldBottomLeft + Vector3.right * (x * nodeDiameter + nodeRadius) + Vector3.forward * (y * nodeDiameter + nodeRadius);
-                bool walkable = !(Physics.CheckSphere(worldPoint, nodeRadius, unwalkableMask));
-                grid[x, y] = new Node(walkable, worldPoint, x, y);
+                var worldPoint = worldBottomLeft + Vector3.right * (x * _nodeDiameter + nodeRadius) + Vector3.forward * (y * _nodeDiameter + nodeRadius);
+                var walkable = !(Physics.CheckSphere(worldPoint, nodeRadius, unWalkableMask));
+                _grid[x, y] = new Node(walkable, worldPoint, x, y);
             }
         }
     }
 
     public List<Node> GetNeighbours(Node node)
     {
-        List<Node> neighbours = new List<Node>();
+        var neighbours = new List<Node>();
 
-        for (int x = -1; x <= 1; x++)
+        for (var x = -1; x <= 1; x++)
         {
-            for (int y = -1; y <= 1; y++)
+            for (var y = -1; y <= 1; y++)
             {
                 if (x == 0 && y == 0)
                     continue;
 
-                int checkX = node.gridX + x;
-                int checkY = node.gridY + y;
+                var checkX = node.GridX + x;
+                var checkY = node.GridY + y;
 
-                if (checkX >= 0 && checkX < gridSizeX && checkY >= 0 && checkY < gridSizeY)
+                if (checkX >= 0 && checkX < _gridSizeX && checkY >= 0 && checkY < _gridSizeY)
                 {
-                    neighbours.Add(grid[checkX, checkY]);
+                    neighbours.Add(_grid[checkX, checkY]);
                 }
             }
         }
@@ -68,31 +67,30 @@ public class Grid : MonoBehaviour
 
     public Node NodeFromWorldPoint(Vector3 worldPosition)
     {
-        float percentX = (worldPosition.x + gridWorldSize.x / 2) / gridWorldSize.x;
-        float percentY = (worldPosition.z + gridWorldSize.y / 2) / gridWorldSize.y;
+        var percentX = (worldPosition.x + gridWorldSize.x / 2) / gridWorldSize.x;
+        var percentY = (worldPosition.z + gridWorldSize.y / 2) / gridWorldSize.y;
         percentX = Mathf.Clamp01(percentX);
         percentY = Mathf.Clamp01(percentY);
 
-        int x = Mathf.RoundToInt((gridSizeX - 1) * percentX);
-        int y = Mathf.RoundToInt((gridSizeY - 1) * percentY);
-        return grid[x, y];
+        var x = Mathf.RoundToInt((_gridSizeX - 1) * percentX);
+        var y = Mathf.RoundToInt((_gridSizeY - 1) * percentY);
+        return _grid[x, y];
     }
-    void OnDrawGizmos()
+
+    private void OnDrawGizmos()
     {
         if (!EnableGizmos) { return; }
         Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x, 1, gridWorldSize.y));
 
-        if (grid != null)
+        if (_grid == null) return;
+        foreach (var n in _grid)
         {
-            foreach (Node n in grid)
-            {
-                Gizmos.color = (n.walkable) ? Color.white : Color.red;
+            Gizmos.color = (n.Walkable) ? Color.white : Color.red;
 
-                if (path != null)
-                    if (path.Contains(n))
-                        Gizmos.color = Color.black;
-                Gizmos.DrawCube(n.worldPosition, Vector3.one * (nodeDiameter - .1f));
-            }
+            if (Path != null)
+                if (Path.Contains(n))
+                    Gizmos.color = Color.black;
+            Gizmos.DrawCube(n.WorldPosition, Vector3.one * (_nodeDiameter - .1f));
         }
     }
 }

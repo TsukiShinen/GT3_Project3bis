@@ -1,11 +1,10 @@
 ﻿using BehaviorDesigner.Runtime;
 using BehaviorDesigner.Runtime.Tasks;
 using Library.Command;
-using UnityEngine;
 
-namespace BehaviourTree
+namespace AddonBehaviourTree
 {
-    public class GoToTask : Action
+    public class GoTo : Action
     {
         public SharedTank Tank;
         public SharedVector3 Target;

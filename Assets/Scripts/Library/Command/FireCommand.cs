@@ -1,16 +1,17 @@
-using Library.Command;
-
-public class FireCommand : ICommand
+namespace Library.Command
 {
-    private Tank _tank;
-
-    public FireCommand(Tank tank)
+    public class FireCommand : ICommand
     {
-        _tank = tank;
-    }
+        private readonly Tank _tank;
 
-    public void Execute()
-    {
-        _tank.Shoot();
+        public FireCommand(Tank tank)
+        {
+            _tank = tank;
+        }
+
+        public void Execute()
+        {
+            _tank.Shoot();
+        }
     }
 }

@@ -1,19 +1,19 @@
-using Library.Command;
-using UnityEngine;
-
-public class MoveCommand : ICommand
+namespace Library.Command
 {
-    private Tank _tank;
-    private float _direction;
-
-    public MoveCommand(Tank tank, float verticalDirection)
+    public class MoveCommand : ICommand
     {
-        _tank = tank;
-        _direction = verticalDirection;
-    }
+        private readonly Tank _tank;
+        private readonly float _direction;
 
-    public void Execute()
-    {
-        _tank.Move(_direction);
+        public MoveCommand(Tank tank, float verticalDirection)
+        {
+            _tank = tank;
+            _direction = verticalDirection;
+        }
+
+        public void Execute()
+        {
+            _tank.Move(_direction);
+        }
     }
 }

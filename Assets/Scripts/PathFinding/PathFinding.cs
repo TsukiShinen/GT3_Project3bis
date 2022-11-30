@@ -1,42 +1,39 @@
 using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 
 public class PathFinding : MonoBehaviour
 {
 
     public Transform start, target;
-    Grid grid;
+    private Grid _grid;
 
-    void Awake()
+    private void Awake()
     {
-        grid = GetComponent<Grid>();
+        _grid = GetComponent<Grid>();
     }
 
-    void Update()
+    private void Update()
     {
         FindPath(start.position, target.position);
     }
 
-    void FindPath(Vector3 startPos, Vector3 targetPos)
+    private void FindPath(Vector3 startPos, Vector3 targetPos)
     {
-        Node startNode = grid.NodeFromWorldPoint(startPos);
-        Node targetNode = grid.NodeFromWorldPoint(targetPos);
+        var startNode = _grid.NodeFromWorldPoint(startPos);
+        var targetNode = _grid.NodeFromWorldPoint(targetPos);
 
-        List<Node> openSet = new List<Node>();
-        HashSet<Node> closedSet = new HashSet<Node>();
+        var openSet = new List<Node>();
+        var closedSet = new HashSet<Node>();
         openSet.Add(startNode);
 
         while (openSet.Count > 0)
         {
-            Node node = openSet[0];
-            for (int i = 1; i < openSet.Count; i++)
+            var node = openSet[0];
+            for (var i = 1; i < openSet.Count; i++)
             {
-                if (openSet[i].fCost < node.fCost || openSet[i].fCost == node.fCost)
-                {
-                    if (openSet[i].hCost < node.hCost)
-                        node = openSet[i];
-                }
+                if (openSet[i].FCost >= node.FCost && openSet[i].FCost != node.FCost) continue;
+                if (openSet[i].HCost < node.HCost)
+                    node = openSet[i];
             }
 
             openSet.Remove(node);
@@ -48,47 +45,45 @@ public class PathFinding : MonoBehaviour
                 return;
             }
 
-            foreach (Node neighbour in grid.GetNeighbours(node))
+            foreach (var neighbour in _grid.GetNeighbours(node))
             {
-                if (!neighbour.walkable || closedSet.Contains(neighbour))
+                if (!neighbour.Walkable || closedSet.Contains(neighbour))
                 {
                     continue;
                 }
 
-                int newCostToNeighbour = node.gCost + GetDistance(node, neighbour);
-                if (newCostToNeighbour < neighbour.gCost || !openSet.Contains(neighbour))
-                {
-                    neighbour.gCost = newCostToNeighbour;
-                    neighbour.hCost = GetDistance(neighbour, targetNode);
-                    neighbour.parent = node;
+                var newCostToNeighbour = node.GCost + GetDistance(node, neighbour);
+                if (newCostToNeighbour >= neighbour.GCost && openSet.Contains(neighbour)) continue;
+                neighbour.GCost = newCostToNeighbour;
+                neighbour.HCost = GetDistance(neighbour, targetNode);
+                neighbour.Parent = node;
 
-                    if (!openSet.Contains(neighbour))
-                        openSet.Add(neighbour);
-                }
+                if (!openSet.Contains(neighbour))
+                    openSet.Add(neighbour);
             }
         }
     }
 
-    void RetracePath(Node startNode, Node endNode)
+    private void RetracePath(Node startNode, Node endNode)
     {
-        List<Node> path = new List<Node>();
-        Node currentNode = endNode;
+        var path = new List<Node>();
+        var currentNode = endNode;
 
         while (currentNode != startNode)
         {
             path.Add(currentNode);
-            currentNode = currentNode.parent;
+            currentNode = currentNode.Parent;
         }
         path.Reverse();
 
-        grid.path = path;
+        _grid.Path = path;
 
     }
 
-    int GetDistance(Node nodeA, Node nodeB)
+    private static int GetDistance(Node nodeA, Node nodeB)
     {
-        int dstX = Mathf.Abs(nodeA.gridX - nodeB.gridX);
-        int dstY = Mathf.Abs(nodeA.gridY - nodeB.gridY);
+        var dstX = Mathf.Abs(nodeA.GridX - nodeB.GridX);
+        var dstY = Mathf.Abs(nodeA.GridY - nodeB.GridY);
 
         if (dstX > dstY)
             return 14 * dstY + 10 * (dstX - dstY);

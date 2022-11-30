@@ -1,10 +1,11 @@
-using UnityEngine;
 using BehaviorDesigner.Runtime;
 
-
-[System.Serializable]
-public class SharedTank : SharedVariable<Tank>
+namespace AddonBehaviourTree
 {
-	public override string ToString() { return mValue == null ? "null" : mValue.ToString(); }
-	public static implicit operator SharedTank(Tank value) { return new SharedTank { mValue = value }; }
+	[System.Serializable]
+	public class SharedTank : SharedVariable<Tank>
+	{
+		public override string ToString() { return mValue == null ? "null" : mValue.ToString(); }
+		public static implicit operator SharedTank(Tank value) { return new SharedTank { mValue = value }; }
+	}
 }

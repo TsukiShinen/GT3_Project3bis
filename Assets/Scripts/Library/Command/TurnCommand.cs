@@ -1,19 +1,21 @@
-using Library.Command;
 using UnityEngine;
 
-public class TurnCommand : ICommand
+namespace Library.Command
 {
-    private Tank _tank;
-    private float _horizontalDirection;
-
-    public TurnCommand(Tank tank, float horizontalDirection)
+    public class TurnCommand : ICommand
     {
-        _tank = tank;
-        _horizontalDirection = horizontalDirection;
-    }
+        private readonly Tank _tank;
+        private readonly float _horizontalDirection;
 
-    public void Execute()
-    {
-        _tank.Turn(90 * Mathf.Sign(_horizontalDirection));
+        public TurnCommand(Tank tank, float horizontalDirection)
+        {
+            _tank = tank;
+            _horizontalDirection = horizontalDirection;
+        }
+
+        public void Execute()
+        {
+            _tank.Turn(90 * Mathf.Sign(_horizontalDirection));
+        }
     }
 }
