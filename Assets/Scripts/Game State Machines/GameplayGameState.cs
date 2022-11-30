@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "GameState", menuName = "GameState/Gameplay")]
@@ -26,10 +27,15 @@ public class GameplayGameState : BaseGameState
         {
             _machine.StartCoroutine(tankToDespawn(tank));
         }
+        gameManagerSO.tankToDespawn = new List<Tank>();
     }
 
     public IEnumerator tankToDespawn(Tank tank)
     {
+        if(tank == gameManagerSO.tankPlayer)
+        {
+            Camera.main.transform.SetParent(null);
+        }
         tank.IsDead = true;
         tank.gameObject.SetActive(false);
 
@@ -44,6 +50,12 @@ public class GameplayGameState : BaseGameState
         tank.SetHealthUI();
 
         tank.IsDead = false;
+        if (tank == gameManagerSO.tankPlayer)
+        {
+            Camera.main.transform.SetParent(tank.transform);
+            Camera.main.transform.localPosition = gameManagerSO.CamPos;
+            Camera.main.transform.localRotation = Quaternion.Euler(gameManagerSO.Tilt);
+        }
     }
 
     public override void FixedUpdateState()
