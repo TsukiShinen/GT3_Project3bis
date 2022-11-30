@@ -18,7 +18,8 @@ public class ZoneStateMachine : MonoBehaviour
     #endregion
 
     #region Properties
-    public BaseZoneState CurrentZState => lstZStates.Find(zs => zs.state == currentZState).machine;
+
+    private BaseZoneState CurrentZState => lstZStates.Find(zs => zs.state == currentZState).machine;
     public EZoneState CurrentStateType => currentZState;
     public EZoneState LastZState { get; set; }
     #endregion
@@ -32,9 +33,6 @@ public class ZoneStateMachine : MonoBehaviour
         TeamsTanksInZone = new Dictionary<TeamSO, int>();
         SubGStateInit();
         CurrentZState.StartState();
-
-        flags1.enabled = false;
-        flags2.enabled = false;
     }
 
     private void SubGStateInit()
@@ -51,7 +49,6 @@ public class ZoneStateMachine : MonoBehaviour
     private void Update()
     {
         CurrentZState.UpdateState();
-        Debug.Log(TeamsTanksInZone.Count);
     }
 
     private void FixedUpdate()

@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using DefaultNamespace;
+﻿using DefaultNamespace;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "ZoneState", menuName = "ZoneState/Captured")]
@@ -23,8 +22,6 @@ public class CapturedZoneState : BaseZoneState
        Debug.Log("Captured");
        _timer = 0;
        _machine.score = gameParametersSo.timeTakeZone;
-       _machine.flags1.enabled = true;
-       _machine.flags2.enabled = true;
        _machine.flags1.material.color = _machine.teamScoring.TeamColor;
        _machine.flags2.material.color = _machine.teamScoring.TeamColor;
        _machine.flagIcon.color = _machine.teamScoring.TeamColor;
@@ -71,8 +68,8 @@ public class CapturedZoneState : BaseZoneState
 
     public override void LeaveState()
     {
-        _machine.flags1.enabled = false;
-        _machine.flags2.enabled = false;
+        _machine.flags1.material.color = Color.white;
+        _machine.flags2.material.color = Color.white;
         _machine.LastZState = EZoneState.CAPTURED;
         _machine.flagIcon.color = Color.black;
     }

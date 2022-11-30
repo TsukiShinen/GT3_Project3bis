@@ -91,7 +91,7 @@ public class Tank : MonoBehaviour
             target = Vector3.zero;
         }
 
-        if (TankParametersSO.PathFinding == null) { return; }
+        if (TankParametersSO.PathFinding) return;
         if (ArrivedAtWaypoint && _waypoints.Count > 0)
         {
             _positionToGo = _waypoints.Dequeue();
