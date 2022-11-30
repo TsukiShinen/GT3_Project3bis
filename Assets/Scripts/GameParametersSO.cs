@@ -6,6 +6,7 @@ namespace DefaultNamespace
     public class GameParametersSO : ScriptableObject
     {
         public int maxScore = 100;
+        public float timeTakeZone = 7;
         public float gameTimer = 120f;
     }
 }
