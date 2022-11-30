@@ -23,8 +23,10 @@ public class CapturedZoneState : BaseZoneState
        Debug.Log("Captured");
        _timer = 0;
        _machine.score = gameParametersSo.timeTakeZone;
-       _machine.flags1.enabled = false;
-       _machine.flags2.enabled = false;
+       _machine.flags1.enabled = true;
+       _machine.flags2.enabled = true;
+       _machine.flags1.material.color = _machine.teamScoring.TeamColor;
+       _machine.flags2.material.color = _machine.teamScoring.TeamColor;
     }
 
     public override void UpdateState()
@@ -68,6 +70,8 @@ public class CapturedZoneState : BaseZoneState
 
     public override void LeaveState()
     {
+        _machine.flags1.enabled = false;
+        _machine.flags2.enabled = false;
         _machine.LastZState = EZoneState.CAPTURED;
     }
 

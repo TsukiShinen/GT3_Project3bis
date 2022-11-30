@@ -40,9 +40,9 @@ public class ZoneStateMachine : MonoBehaviour
     {
         foreach (var gState in lstZStates)
         {
+            gState.machine = Instantiate(gState.machine);
             gState.machine.Init(this, gState.state);
         }
-
     }
     #endregion
 
@@ -50,6 +50,7 @@ public class ZoneStateMachine : MonoBehaviour
     private void Update()
     {
         CurrentZState.UpdateState();
+        Debug.Log(TeamsTanksInZone.Count);
     }
 
     private void FixedUpdate()
@@ -100,7 +101,7 @@ public class ZoneStateMachine : MonoBehaviour
 }
 
 [Serializable]
-public struct ZoneState
+public class ZoneState
 {
     public EZoneState state;
     public BaseZoneState machine;
