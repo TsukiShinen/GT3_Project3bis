@@ -6,8 +6,8 @@ using UnityEngine.AI;
 [CreateAssetMenu(fileName ="New Tank Settings",menuName ="Others/TankParametersSO")]
 public class TankParametersSO : ScriptableObject
 {
-    [SerializeField] private int maxLife;
-    public int MaxLife { get => maxLife; }
+    [SerializeField] private float maxLife;
+    public float MaxLife { get => maxLife; }
 
     [SerializeField] private float speed;
     public float Speed { get => speed; }

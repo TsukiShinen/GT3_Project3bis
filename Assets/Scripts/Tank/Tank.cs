@@ -4,6 +4,7 @@ using UnityEditor;
 using UnityEditor.Tilemaps;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 using static UnityEngine.GraphicsBuffer;
 
 public class Tank : MonoBehaviour
@@ -19,7 +20,7 @@ public class Tank : MonoBehaviour
     public TankParametersSO TankParametersSO;
 
     private Transform _transform;
-    private int _life;
+    private float _life;
 
     private float DistanceFromPositionToGo => Vector2.Distance(new Vector2(_positionToGo.x, _positionToGo.z), new Vector2(transform.position.x, transform.position.z));
     private bool ArrivedAtWaypoint => DistanceFromPositionToGo < 0.5f;
@@ -37,6 +38,10 @@ public class Tank : MonoBehaviour
 
     public Vector3 target;
 
+    public Slider m_Slider;
+    public Image m_FillImage;
+    public Color m_FullHealthColor = Color.green;       // The color the health bar will be when on full health.
+    public Color m_ZeroHealthColor = Color.red;         // The color the health bar will be when on no health.
     #endregion
 
     public void InitialLoad(TankParametersSO pTankParametersSO, TeamSO pteam)
@@ -54,14 +59,29 @@ public class Tank : MonoBehaviour
 
         _positionToGo = transform.position;
         _waypoints = new Queue<Vector3>();
+
+        SetHealthUI();
+
     }
 
     private void Awake()
     {
         _transform = gameObject.transform;
         navMeshAgent = GetComponent<NavMeshAgent>();
+    }
 
-        
+    public void TakeDamage(float amount)
+    {
+        _life -= amount;
+
+        SetHealthUI();
+    }
+
+
+    private void SetHealthUI()
+    {
+        m_Slider.value = _life/TankParametersSO.MaxLife * 100;
+        m_FillImage.color = Color.Lerp(m_ZeroHealthColor, m_FullHealthColor, _life / TankParametersSO.MaxLife);
     }
 
     private void Update()
