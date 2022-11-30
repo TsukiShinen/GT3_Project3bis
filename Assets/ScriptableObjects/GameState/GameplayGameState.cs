@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using State_Machines;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace ScriptableObjects.GameState
 {
@@ -21,6 +22,7 @@ namespace ScriptableObjects.GameState
         #region Methods   
         public override void StartState()
         {
+            SceneManager.LoadScene("ScenePropreWola");
             _mainCamera = Camera.main;
             gameManagerSo.Init();
         }

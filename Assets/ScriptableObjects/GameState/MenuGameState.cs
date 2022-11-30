@@ -1,5 +1,6 @@
 ﻿using State_Machines;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace ScriptableObjects.GameState
 {
@@ -17,12 +18,15 @@ namespace ScriptableObjects.GameState
         #region Methods   
         public override void StartState()
         {
-      
+            SceneManager.LoadScene("StartMenu");
         }
 
         public override void UpdateState()
         {
-
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                PlayButton();
+            }
         }
 
         public override void FixedUpdateState()
