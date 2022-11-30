@@ -12,6 +12,8 @@ public class GameManagerSO : ScriptableObject
     public Dictionary<TeamSO, int> Scores;
     public float timer;
 
+    public Tank tankPlayer;
+
     public TeamSO team1;
     public TeamSO team2;
 
@@ -37,6 +39,9 @@ public class GameManagerSO : ScriptableObject
             team1.TankList[i].PathFinding.grid = grid;
             var tankObject = Instantiate(tankPrefab, spawnTeam1.transform.position + spawnTeam1.transform.right * 3 * i, spawnTeam1.transform.rotation);
             tankObject.GetComponent<Tank>().InitialLoad(team1.TankList[i], team1);
+            if(i > 0) continue;
+            tankPlayer = tankObject.GetComponent<Tank>();
+            tankPlayer.TankParametersSO.PathFinding = null;
         }
         for (int i = 0; i < team2.TankList.Count; i++)
         {

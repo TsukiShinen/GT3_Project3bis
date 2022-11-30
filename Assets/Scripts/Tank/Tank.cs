@@ -8,6 +8,8 @@ using static UnityEngine.GraphicsBuffer;
 
 public class Tank : MonoBehaviour
 {
+    #region Variables
+
     [SerializeField] private GameObject tankMesh;
     [SerializeField] private GameObject completeShell;
     [SerializeField] private GameObject dustTrail;
@@ -35,9 +37,11 @@ public class Tank : MonoBehaviour
 
     public Vector3 target;
 
+    #endregion
+
     public void InitialLoad(TankParametersSO pTankParametersSO, TeamSO pteam)
     {
-        TankParametersSO = pTankParametersSO;
+        TankParametersSO = ScriptableObject.Instantiate(pTankParametersSO);
         _life = pTankParametersSO.MaxLife;
         team = pteam;
 
@@ -56,27 +60,25 @@ public class Tank : MonoBehaviour
     {
         _transform = gameObject.transform;
         navMeshAgent = GetComponent<NavMeshAgent>();
+
+        
     }
 
     private void Update()
     {
         if(target != Vector3.zero)
         {
-            SetPath(new Queue<Vector3>(TankParametersSO.PathFinding.FindPath(transform.position, target, navMeshAgent)));
+            SetPath(new Queue<Vector3>(TankParametersSO.PathFinding.FindPath(_transform.position, target)));
             target = Vector3.zero;
         }
-        if (Input.GetKeyDown(KeyCode.Space) && _canShoot)
-        {
-            _canShoot = false;
-            StartCoroutine(Shoot());
-        }
 
+        if(TankParametersSO.PathFinding == null) { return; }
         if (ArrivedAtWaypoint && _waypoints.Count > 0)
         {
             _positionToGo = _waypoints.Dequeue();
         }
         isMoving = false;
-        Move(_positionToGo);
+        MoveTo(_positionToGo);
     }
 
     public void SetPath(Queue<Vector3> lstWaypoint)
@@ -86,7 +88,12 @@ public class Tank : MonoBehaviour
         _positionToGo = _waypoints.Dequeue();
     }
 
-    private void Move(Vector3 target)
+    public void Move(float verticalDirection)
+    {
+        transform.position += _transform.forward * TankParametersSO.Speed * verticalDirection * Time.deltaTime;    
+    }
+
+    public void MoveTo(Vector3 target)
     {
         if (DistanceFromPositionToGo < 0.1f) { return; }
 
@@ -96,7 +103,7 @@ public class Tank : MonoBehaviour
 
         if (Mathf.Abs(angle) > 2f)
         {
-            Turn(angle, targetDir);
+            Turn(angle);
         }
         else
         {
@@ -110,13 +117,21 @@ public class Tank : MonoBehaviour
         isMoving = true;
     }
 
-    private void Turn(float angle, Vector2 targetDir)
+    public void Turn(float angle)
     {
-        transform.Rotate(new Vector3(0, (TankParametersSO.Speed * Mathf.Sign(angle)) * Time.deltaTime, 0));
+        transform.Rotate(new Vector3(0, (TankParametersSO.RotationSpeed * Mathf.Sign(angle)) * Time.deltaTime, 0));
     }
 
-    public IEnumerator Shoot()
+    public void Shoot()
     {
+        if (!_canShoot) return;
+        StartCoroutine(ShootCoroutine());
+    }
+
+    private IEnumerator ShootCoroutine()
+    {
+        _canShoot = false;
+
         var bullet = Instantiate(completeShell, shootSocket);
 
         bullet.transform.SetParent(null);

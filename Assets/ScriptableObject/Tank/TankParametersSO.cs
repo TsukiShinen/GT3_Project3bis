@@ -25,7 +25,7 @@ public class TankParametersSO : ScriptableObject
     public float RespawnTime { get => respawnTime; }
 
     [SerializeField] private PathFindingSO pathFinding;
-    public PathFindingSO PathFinding { get => pathFinding; }
+    public PathFindingSO PathFinding { get => pathFinding; set => pathFinding = value; }
 
     [SerializeField] private GameObject tankWaifu;
     public GameObject TankWaifu { get => tankWaifu; }
