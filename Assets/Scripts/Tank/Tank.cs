@@ -12,6 +12,8 @@ public class Tank : MonoBehaviour
     [SerializeField] private GameObject completeShell;
     [SerializeField] private Transform shootSocket;
 
+    [SerializeField] private SpriteRenderer icon;
+
     public GameObject TankExplosion;
 
     public TankParametersSO TankParametersSO;
@@ -59,6 +61,8 @@ public class Tank : MonoBehaviour
         {
             renderers[i].material.color = team.TeamColor;
         }
+
+        icon.color = team.TeamColor;
 
         _positionToGo = transform.position;
         _waypoints = new Queue<Vector3>();
