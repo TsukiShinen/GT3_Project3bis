@@ -27,8 +27,12 @@ namespace ScriptableObjects
         [SerializeField] private PathFindingSO pathFinding;
         public PathFindingSO PathFinding { get => pathFinding; set => pathFinding = value; }
 
-        [SerializeField] private GameObject tankWaifu;
-        public GameObject TankWaifu => tankWaifu;
+        [SerializeField] private AnimationCurve specialJump;
+        public AnimationCurve SpecialJump => specialJump;
+
+        [SerializeField] private float specialJumpCooldown;
+        public float SpecialJumpCooldown => specialJumpCooldown;
+
 
         /*
     Scale

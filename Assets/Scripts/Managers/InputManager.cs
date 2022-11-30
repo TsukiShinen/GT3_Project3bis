@@ -24,5 +24,9 @@ public class InputManager : Singleton<MonoBehaviour>
             CommandManager.Instance.AddCommand(new TurnCommand(gameManagerSo.tankPlayer, Mathf.Sign(Input.GetAxis("Horizontal"))));
         }
 
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            CommandManager.Instance.AddCommand(new SpecialJumpCommand(gameManagerSo.tankPlayer));
+        }
     }
 }

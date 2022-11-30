@@ -35,6 +35,7 @@ public class Tank : MonoBehaviour
 
     public TeamSO team;
     public bool canShoot = true;
+    public bool canJump = true;
 
     public NavMeshAgent navMeshAgent;
     public Rigidbody tankRigidbody;
@@ -94,7 +95,7 @@ public class Tank : MonoBehaviour
             SetPath(new Queue<Vector3>(tankParametersSO.PathFinding.FindPath(_transform.position, target)));
             target = Vector3.zero;
         }
-        Debug.Log(tankParametersSO.name);
+
         if (!tankParametersSO.PathFinding) return;
         if (ArrivedAtWaypoint && _waypoints.Count > 0)
         {
@@ -165,7 +166,30 @@ public class Tank : MonoBehaviour
         if (!canShoot) return;
         StartCoroutine(ShootCoroutine());
     }
+    public void SpecialJump()
+    {
+        if (isDead) return;
+        if (!canJump) return;
+        StartCoroutine(SpecialJumpCouroutine());
+    }
 
+    public IEnumerator SpecialJumpCouroutine()
+    {
+        canJump = false;
+        float startTime = Time.time;
+        Vector3 holdPosition = _transform.position;
+        float angle = 360f / (tankParametersSO.SpecialJump[tankParametersSO.SpecialJump.length - 1].time * 2);
+
+        while (Time.time - startTime < tankParametersSO.SpecialJump[tankParametersSO.SpecialJump.length - 1].time*2)
+        {
+            _transform.position = new Vector3(holdPosition.x, holdPosition.y + tankParametersSO.SpecialJump.Evaluate(Time.time - startTime), holdPosition.z);
+            tankMesh.transform.Rotate(-angle*Time.deltaTime, 0, 0);
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(tankParametersSO.SpecialJumpCooldown);
+        canJump = true;
+    }
     private IEnumerator ShootCoroutine()
     {
         canShoot = false;
@@ -180,6 +204,7 @@ public class Tank : MonoBehaviour
 
         rbBullet.velocity = tankParametersSO.ProjectileSpeed * shootSocket.forward;
 
+        
         yield return new WaitForSeconds(tankParametersSO.ShootCooldown);
 
         canShoot = true;
