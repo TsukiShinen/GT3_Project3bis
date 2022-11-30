@@ -44,11 +44,13 @@ public class GameplayGameState : BaseGameState
         yield return new WaitForSeconds(tank.TankParametersSO.RespawnTime);
 
         tank.gameObject.SetActive(true);
-        tank.transform.position = tank.Spawn;
+        tank.transform.position = tank.SpawnPosition;
+        tank.transform.rotation = tank.SpawnRotation;
 
         tank.Life = tank.TankParametersSO.MaxLife;
         tank.SetHealthUI();
 
+        tank.CanShoot = true;
         tank.IsDead = false;
         if (tank == gameManagerSO.tankPlayer)
         {

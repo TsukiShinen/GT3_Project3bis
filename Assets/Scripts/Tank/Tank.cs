@@ -31,7 +31,7 @@ public class Tank : MonoBehaviour
     private Queue<Vector3> _waypoints;
 
     public TeamSO team;
-    private bool _canShoot = true;
+    public bool CanShoot = true;
 
     public NavMeshAgent navMeshAgent;
     public Rigidbody tankRigidbody;
@@ -43,7 +43,8 @@ public class Tank : MonoBehaviour
     public Color m_ZeroHealthColor = Color.red;         // The color the health bar will be when on no health.
 
     public bool IsDead = false;
-    public Vector3 Spawn;
+    public Vector3 SpawnPosition;
+    public Quaternion SpawnRotation;
 
     GameManagerSO gameManager;
     #endregion
@@ -66,7 +67,8 @@ public class Tank : MonoBehaviour
 
         _positionToGo = transform.position;
         _waypoints = new Queue<Vector3>();
-        Spawn = transform.position;
+        SpawnPosition = _transform.position;
+        SpawnRotation = _transform.rotation;
 
         SetHealthUI();
 
@@ -152,13 +154,13 @@ public class Tank : MonoBehaviour
     public void Shoot()
     {
         if (IsDead) return;
-        if (!_canShoot) return;
+        if (!CanShoot) return;
         StartCoroutine(ShootCoroutine());
     }
 
     private IEnumerator ShootCoroutine()
     {
-        _canShoot = false;
+        CanShoot = false;
 
         var bullet = Instantiate(completeShell, shootSocket);
 
@@ -170,7 +172,7 @@ public class Tank : MonoBehaviour
 
         yield return new WaitForSeconds(TankParametersSO.ShootCooldown);
 
-        _canShoot = true;
+        CanShoot = true;
     }
 
     public void TakeDamage(float amount)
