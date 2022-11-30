@@ -1,9 +1,6 @@
 ﻿using System.Collections.Generic;
-using BehaviorDesigner.Runtime.Tasks.Unity.UnityGameObject;
 using DefaultNamespace;
-using Library.Command;
 using UnityEngine;
-using UnityEngine.SocialPlatforms.Impl;
 
 [CreateAssetMenu(fileName = "GameManagerSO", menuName = "Game/GameManagerSO", order = 0)]
 public class GameManagerSO : ScriptableObject
@@ -18,6 +15,8 @@ public class GameManagerSO : ScriptableObject
     public TeamSO team2;
 
     [SerializeField] private GameObject tankPrefab;
+    [SerializeField] private Vector3 camPos;
+    [SerializeField] private Vector3 tilt;
 
     public bool TimerFished => timer <= 0;
 
@@ -39,10 +38,16 @@ public class GameManagerSO : ScriptableObject
             team1.TankList[i].PathFinding.grid = grid;
             var tankObject = Instantiate(tankPrefab, spawnTeam1.transform.position + spawnTeam1.transform.right * 3 * i, spawnTeam1.transform.rotation);
             tankObject.GetComponent<Tank>().InitialLoad(team1.TankList[i], team1);
+
             if(i > 0) continue;
             tankPlayer = tankObject.GetComponent<Tank>();
             tankPlayer.TankParametersSO.PathFinding = null;
+            var _cam = Camera.main;
+            _cam.transform.SetParent(tankObject.transform);
+            _cam.transform.localPosition = camPos;
+            _cam.transform.localRotation = Quaternion.Euler(tilt);
         }
+
         for (int i = 0; i < team2.TankList.Count; i++)
         {
             team2.TankList[i].PathFinding.grid = grid;
