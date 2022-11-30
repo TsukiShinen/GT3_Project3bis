@@ -1,11 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
-using UnityEditor.Tilemaps;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
-using static UnityEngine.GraphicsBuffer;
 
 public class Tank : MonoBehaviour
 {
@@ -13,14 +10,14 @@ public class Tank : MonoBehaviour
 
     [SerializeField] private GameObject tankMesh;
     [SerializeField] private GameObject completeShell;
-    [SerializeField] private GameObject dustTrail;
-    [SerializeField] private GameObject tankExplosion;
     [SerializeField] private Transform shootSocket;
+
+    public GameObject TankExplosion;
 
     public TankParametersSO TankParametersSO;
 
     private Transform _transform;
-    private float _life;
+    public float Life;
 
     private float DistanceFromPositionToGo => Vector2.Distance(new Vector2(_positionToGo.x, _positionToGo.z), new Vector2(transform.position.x, transform.position.z));
     private bool ArrivedAtWaypoint => DistanceFromPositionToGo < 0.5f;
@@ -42,13 +39,19 @@ public class Tank : MonoBehaviour
     public Image m_FillImage;
     public Color m_FullHealthColor = Color.green;       // The color the health bar will be when on full health.
     public Color m_ZeroHealthColor = Color.red;         // The color the health bar will be when on no health.
+
+    public bool IsDead = false;
+    public Vector3 Spawn;
+
+    GameManagerSO gameManager;
     #endregion
 
-    public void InitialLoad(TankParametersSO pTankParametersSO, TeamSO pteam)
+    public void InitialLoad(TankParametersSO pTankParametersSO, TeamSO pteam, GameManagerSO pGameManagerSO)
     {
         TankParametersSO = ScriptableObject.Instantiate(pTankParametersSO);
-        _life = pTankParametersSO.MaxLife;
+        Life = pTankParametersSO.MaxLife;
         team = pteam;
+        gameManager = pGameManagerSO;
 
         MeshRenderer[] renderers = tankMesh.GetComponentsInChildren<MeshRenderer>();
 
@@ -59,6 +62,7 @@ public class Tank : MonoBehaviour
 
         _positionToGo = transform.position;
         _waypoints = new Queue<Vector3>();
+        Spawn = transform.position;
 
         SetHealthUI();
 
@@ -70,29 +74,17 @@ public class Tank : MonoBehaviour
         navMeshAgent = GetComponent<NavMeshAgent>();
     }
 
-    public void TakeDamage(float amount)
-    {
-        _life -= amount;
-
-        SetHealthUI();
-    }
-
-
-    private void SetHealthUI()
-    {
-        m_Slider.value = _life/TankParametersSO.MaxLife * 100;
-        m_FillImage.color = Color.Lerp(m_ZeroHealthColor, m_FullHealthColor, _life / TankParametersSO.MaxLife);
-    }
-
     private void Update()
     {
-        if(target != Vector3.zero)
+        if (IsDead) return;
+
+        if (target != Vector3.zero)
         {
             SetPath(new Queue<Vector3>(TankParametersSO.PathFinding.FindPath(_transform.position, target)));
             target = Vector3.zero;
         }
 
-        if(TankParametersSO.PathFinding == null) { return; }
+        if (TankParametersSO.PathFinding == null) { return; }
         if (ArrivedAtWaypoint && _waypoints.Count > 0)
         {
             _positionToGo = _waypoints.Dequeue();
@@ -103,6 +95,8 @@ public class Tank : MonoBehaviour
 
     public void SetPath(Queue<Vector3> lstWaypoint)
     {
+        if (IsDead) return;
+
         if (lstWaypoint == null) return;
         _waypoints = lstWaypoint;
         _positionToGo = _waypoints.Dequeue();
@@ -110,11 +104,15 @@ public class Tank : MonoBehaviour
 
     public void Move(float verticalDirection)
     {
-        transform.position += _transform.forward * TankParametersSO.Speed * verticalDirection * Time.deltaTime;    
+        if (IsDead) return;
+
+        transform.position += _transform.forward * TankParametersSO.Speed * verticalDirection * Time.deltaTime;
     }
 
     public void MoveTo(Vector3 target)
     {
+        if (IsDead) return;
+
         if (DistanceFromPositionToGo < 0.1f) { return; }
 
         Vector2 targetDir = new Vector2(target.x, target.z) - new Vector2(transform.position.x, transform.position.z);
@@ -133,17 +131,22 @@ public class Tank : MonoBehaviour
 
     private void MoveForward()
     {
+        if (IsDead) return;
+
         transform.position += transform.forward * TankParametersSO.Speed * Time.deltaTime;
         isMoving = true;
     }
 
     public void Turn(float angle)
     {
+        if (IsDead) return;
+
         transform.Rotate(new Vector3(0, (TankParametersSO.RotationSpeed * Mathf.Sign(angle)) * Time.deltaTime, 0));
     }
 
     public void Shoot()
     {
+        if (IsDead) return;
         if (!_canShoot) return;
         StartCoroutine(ShootCoroutine());
     }
@@ -165,15 +168,29 @@ public class Tank : MonoBehaviour
         _canShoot = true;
     }
 
-    public void Death()
+    public void TakeDamage(float amount)
     {
-        StartCoroutine(DeathCoroutine());
+        if (IsDead) return;
+
+        Life -= amount;
+
+        SetHealthUI();
     }
 
-    private IEnumerator DeathCoroutine()
+
+    public void SetHealthUI()
     {
-        tankMesh.SetActive(false);
-        Instantiate(tankExplosion, _transform);
-        yield return new WaitForSeconds(TankParametersSO.RespawnTime);
+        m_Slider.value = Life / TankParametersSO.MaxLife * 100;
+        m_FillImage.color = Color.Lerp(m_ZeroHealthColor, m_FullHealthColor, Life / TankParametersSO.MaxLife);
+
+        if (Life <= 0)
+        {
+            Death();
+        }
+    }
+
+    public void Death()
+    {
+        gameManager.TankDeath(this);
     }
 }

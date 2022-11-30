@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using DefaultNamespace;
 using UnityEngine;
 
@@ -10,6 +11,8 @@ public class GameManagerSO : ScriptableObject
     public float timer;
 
     public Tank tankPlayer;
+
+    public List<Tank> tankToDespawn;
 
     public TeamSO team1;
     public TeamSO team2;
@@ -37,7 +40,7 @@ public class GameManagerSO : ScriptableObject
         {
             team1.TankList[i].PathFinding.grid = grid;
             var tankObject = Instantiate(tankPrefab, spawnTeam1.transform.position + spawnTeam1.transform.right * 3 * i, spawnTeam1.transform.rotation);
-            tankObject.GetComponent<Tank>().InitialLoad(team1.TankList[i], team1);
+            tankObject.GetComponent<Tank>().InitialLoad(team1.TankList[i], team1, this);
 
             if(i > 0) continue;
             tankPlayer = tankObject.GetComponent<Tank>();
@@ -52,7 +55,12 @@ public class GameManagerSO : ScriptableObject
         {
             team2.TankList[i].PathFinding.grid = grid;
             var tankObject = Instantiate(tankPrefab, spawnTeam2.transform.position + spawnTeam2.transform.right * 3 * i, spawnTeam2.transform.rotation);
-            tankObject.GetComponent<Tank>().InitialLoad(team2.TankList[i], team2);
+            tankObject.GetComponent<Tank>().InitialLoad(team2.TankList[i], team2, this);
         }
+    }
+
+    public void TankDeath(Tank tank)
+    {
+        tankToDespawn.Add(tank);
     }
 }
