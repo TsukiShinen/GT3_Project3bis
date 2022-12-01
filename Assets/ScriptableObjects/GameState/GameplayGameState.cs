@@ -57,7 +57,7 @@ namespace ScriptableObjects.GameState
 
         private IEnumerator TankToDeSpawn(Tank tank)
         {
-            if(tank == gameManagerSo.tankPlayer)
+            if(tank == gameManagerSo.tankCamera)
             {
                 if (_mainCamera) 
                     _mainCamera.transform.SetParent(null);

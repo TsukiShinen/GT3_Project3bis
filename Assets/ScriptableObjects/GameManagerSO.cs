@@ -15,6 +15,7 @@ namespace ScriptableObjects
         public float timer;
 
         public Tank tankPlayer;
+        public Tank tankCamera;
 
         public List<Tank> tankToDeSpawn;
 
@@ -57,6 +58,7 @@ namespace ScriptableObjects
                         tankPlayer.tankParametersSO.PathFinding = null;
                         tankPlayer.GetComponent<BehaviorTree>().enabled = false;
                     }
+                    tankCamera = tankObject.GetComponent<Tank>();
                     cameraTransform.SetParent(tankObject.transform);
                     cameraTransform.localPosition = CamPos;
                     cameraTransform.localRotation = Quaternion.Euler(Tilt);
