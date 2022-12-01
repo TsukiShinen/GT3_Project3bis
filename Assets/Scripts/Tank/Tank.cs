@@ -187,6 +187,7 @@ public class Tank : MonoBehaviour
             yield return null;
         }
 
+        tankMesh.transform.localRotation = Quaternion.Euler(0, tankMesh.transform.localRotation.y, tankMesh.transform.localRotation.z);
         yield return new WaitForSeconds(tankParametersSO.SpecialJumpCooldown);
         canJump = true;
     }
