@@ -22,6 +22,7 @@ namespace Complete
 
         private void OnTriggerEnter (Collider other)
         {
+            if (!other.CompareTag("Tank") && !other.CompareTag("Obstacle")) return;
             Collider[] colliders = Physics.OverlapSphere (transform.position, m_ExplosionRadius, m_TankMask);
 
             for (int i = 0; i < colliders.Length; i++)

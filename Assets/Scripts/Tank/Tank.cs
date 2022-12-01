@@ -39,6 +39,7 @@ public class Tank : MonoBehaviour
 
     public TeamSO team;
     public bool canShoot = true;
+    public bool isJumping = false;
     public bool canJump = true;
 
     public NavMeshAgent navMeshAgent;
@@ -173,17 +174,20 @@ public class Tank : MonoBehaviour
     {
         if (isDead) return;
         if (!canShoot) return;
+        if(isJumping) return;
         StartCoroutine(ShootCoroutine());
     }
     public void SpecialJump()
     {
         if (isDead) return;
+        if (isJumping) return;
         if (!canJump) return;
         StartCoroutine(SpecialJumpCouroutine());
     }
 
     public IEnumerator SpecialJumpCouroutine()
     {
+        isJumping = true;
         canJump = false;
         float startTime = Time.time;
         Vector3 holdPosition = _transform.position;
@@ -197,6 +201,7 @@ public class Tank : MonoBehaviour
         }
 
         tankMesh.transform.localRotation = Quaternion.Euler(0, tankMesh.transform.localRotation.y, tankMesh.transform.localRotation.z);
+        isJumping = false;
         yield return new WaitForSeconds(tankParametersSO.SpecialJumpCooldown);
         canJump = true;
     }
@@ -213,7 +218,6 @@ public class Tank : MonoBehaviour
         var rbBullet = bullet.GetComponent<Rigidbody>();
 
         rbBullet.velocity = tankParametersSO.ProjectileSpeed * shootSocket.forward;
-
         
         yield return new WaitForSeconds(tankParametersSO.ShootCooldown);
 
