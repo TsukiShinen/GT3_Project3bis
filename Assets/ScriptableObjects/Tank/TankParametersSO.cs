@@ -7,19 +7,19 @@ namespace ScriptableObjects
     public class TankParametersSO : ScriptableObject
     {
         [SerializeField] private float maxLife;
-        public float MaxLife => maxLife;
+        public float MaxLife { get => maxLife; set => maxLife = value; }
 
         [SerializeField] private float speed;
-        public float Speed => speed;
+        public float Speed { get => speed; set => speed = value; }
 
         [SerializeField] private float rotationSpeed;
-        public float RotationSpeed => rotationSpeed;
+        public float RotationSpeed { get => rotationSpeed; set => rotationSpeed = value; }
 
         [SerializeField] private float projectileSpeed;
         public float ProjectileSpeed => projectileSpeed;
 
         [SerializeField] private float shootCooldown;
-        public float ShootCooldown => shootCooldown;
+        public float ShootCooldown { get => shootCooldown; set => shootCooldown = value; }
 
         [SerializeField] private float respawnTime;
         public float RespawnTime => respawnTime;
@@ -35,6 +35,12 @@ namespace ScriptableObjects
 
         [SerializeField] private float detectionRadius;
         public float DetectionRadius => detectionRadius;
+
+        [SerializeField] private float minSize;
+        public float MinSize => minSize;
+
+        [SerializeField] private float maxSize;
+        public float MaxSize => maxSize;
 
         /*
     Scale

@@ -8,5 +8,6 @@ namespace ScriptableObjects
         public int maxScore = 100;
         public float timeTakeZone = 7;
         public float gameTimer = 120f;
+        public bool funMode = false;
     }
 }

@@ -48,6 +48,17 @@ public class Tank : MonoBehaviour
         team = pTeam;
         _gameManager = pGameManagerSo;
 
+        if(_gameManager.gameParametersSo.funMode)
+        {
+            float random = Random.Range(tankParametersSO.MinSize, tankParametersSO.MaxSize);
+            tankMesh.transform.localScale = new Vector3(Random.Range(tankParametersSO.MinSize, tankParametersSO.MaxSize), Random.Range(tankParametersSO.MinSize, tankParametersSO.MaxSize), Random.Range(tankParametersSO.MinSize, tankParametersSO.MaxSize));
+            tankParametersSO.Speed /= random;
+            tankParametersSO.RotationSpeed /= random;
+            tankParametersSO.MaxLife *= random * 2;
+            life *= random * 2;
+            tankParametersSO.ShootCooldown /= random;
+        }
+        
         var renderers = tankMesh.GetComponentsInChildren<MeshRenderer>();
         foreach (var r in renderers) { r.material.color = team.TeamColor; }
         icon.color = team.TeamColor;
