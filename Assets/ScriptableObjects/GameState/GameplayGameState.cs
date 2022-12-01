@@ -82,7 +82,7 @@ namespace ScriptableObjects.GameState
 
             tank.canShoot = true;
             tank.isDead = false;
-
+            if (tank != gameManagerSo.tankCamera) yield break;
             var cameraTransform = _mainCamera.transform;
             cameraTransform.SetParent(tank.transform);
             cameraTransform.localPosition = gameManagerSo.CamPos;
