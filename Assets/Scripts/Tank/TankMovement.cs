@@ -6,6 +6,8 @@ using UnityEngine;
 using UnityEngine.AI;
 using static UnityEngine.GraphicsBuffer;
 using UnityEngine.UIElements;
+using System;
+using System.Runtime.CompilerServices;
 
 public class TankMovement : MonoBehaviour
 {
@@ -14,9 +16,11 @@ public class TankMovement : MonoBehaviour
     [SerializeField] private Tank tank;
     
     private NavMeshAgent _navMeshAgent;
-    private Vector3 _target;
     private Vector3 _positionToGo;
     private Queue<Vector3> _waypoints;
+
+    public bool mustTurn;
+    private Transform _targetToAimAt;
 
     public bool ArrivedAtWaypoint => DistanceFromPositionToGo < 0.5f;
 
@@ -40,18 +44,15 @@ public class TankMovement : MonoBehaviour
     private void Update()
     {
         if (tank.isDead) return;
-        if (_target != Vector3.zero)
-        {
-            SetPath(new Queue<Vector3>(tank.tankParametersSO.PathFinding.FindPath(transform.position, _target)));
-            _target = Vector3.zero;
-        }
-
         if (!tank.tankParametersSO.PathFinding) return;
         if (ArrivedAtWaypoint && _waypoints.Count > 0)
         {
             _positionToGo = _waypoints.Dequeue();
         }
         MoveTo(_positionToGo);
+
+        if (mustTurn)
+            TurnTo(_targetToAimAt);
     }
 
     public void Move(float verticalDirection)
@@ -71,7 +72,7 @@ public class TankMovement : MonoBehaviour
     public void SetPath(Queue<Vector3> lstWaypoint)
     {
         if (tank.isDead) return;
-
+        if (lstWaypoint.Count == 0) return;
         if (lstWaypoint == null) return;
         _waypoints = lstWaypoint;
         _positionToGo = _waypoints.Dequeue();
@@ -113,6 +114,26 @@ public class TankMovement : MonoBehaviour
         if (tank.isDead) return;
 
         transform.Rotate(new Vector3(0, (tank.tankParametersSO.RotationSpeed * Mathf.Sign(angle)) * Time.deltaTime, 0));
+    }
+
+    public void BeginTurnTo(Transform target)
+    {
+        mustTurn= true;
+        _targetToAimAt= target;
+    }
+
+    private void TurnTo(Transform target)
+    {
+        if (tank.isDead) return;
+
+        var direction = target.position - transform.position;
+
+        var angle = Vector2.SignedAngle(direction, new Vector2(transform.forward.x, transform.forward.z));
+
+        Turn(angle);
+
+        if(Mathf.Approximately(angle, 0))
+            mustTurn = false;
     }
 
     #endregion

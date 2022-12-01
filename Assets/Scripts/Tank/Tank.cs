@@ -18,6 +18,7 @@ public class Tank : MonoBehaviour
 
     public TankMovement tankMovement;
     public TankActions tankActions;
+    public TankDetection tankDetection;
     private GameManagerSO _gameManager;
     public TankParametersSO tankParametersSO;
     public AudioSO audioSO;
@@ -56,6 +57,7 @@ public class Tank : MonoBehaviour
 
         tankMovement.Init();
         tankActions.Init();
+        tankDetection.Init();
 
         SetHealthUI();
     }

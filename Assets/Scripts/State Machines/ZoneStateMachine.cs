@@ -12,7 +12,7 @@ namespace State_Machines
     {
         #region fields
         [SerializeField] private List<ZoneState> lstZStates;
-        [SerializeField] private EZoneState currentZState;
+        public EZoneState currentZState;
         public MeshRenderer flags1;
         public MeshRenderer flags2;
         public SpriteRenderer flagIcon;
@@ -38,7 +38,16 @@ namespace State_Machines
             TeamsTanksInZone = new Dictionary<TeamSO, int>();
             SubGStateInit();
             CurrentZState.StartState();
-            GlobalVariables.Instance.SetVariable("Zone1", (SharedZone)this);
+            var lst = GlobalVariables.Instance.GetVariable("Zones") as SharedListZone;
+            lst.Value.Add(this);
+            GlobalVariables.Instance.SetVariable("Zones", lst);
+        }
+
+        private void OnDestroy()
+        {
+            var lst = GlobalVariables.Instance.GetVariable("Zones") as SharedListZone;
+            lst.Value.Remove(this);
+            GlobalVariables.Instance.SetVariable("Zones", lst);
         }
 
         private void SubGStateInit()

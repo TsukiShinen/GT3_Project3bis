@@ -8,7 +8,6 @@ public class TankActions: MonoBehaviour
     #region Variables
 
     [SerializeField] private Tank tank;
-    [SerializeField] private SphereCollider detectionZone;
     [SerializeField] private GameObject _completeShell;
     [SerializeField] private Transform _shootSocket;
 
@@ -16,7 +15,7 @@ public class TankActions: MonoBehaviour
 
     public void Init()
     {
-        detectionZone.radius = tank.tankParametersSO.DetectionRadius;
+
     }
 
     public void Shoot()
