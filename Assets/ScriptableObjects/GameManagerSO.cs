@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using BehaviorDesigner.Runtime;
 using ScriptableObjects.Team;
 using UnityEngine;
 
@@ -44,6 +45,7 @@ namespace ScriptableObjects
                 if (i > 0) continue;
                 tankPlayer = tankObject.GetComponent<Tank>();
                 tankPlayer.tankParametersSO.PathFinding = null;
+                tankPlayer.GetComponent<BehaviorTree>().enabled = false;
                 var camera = Camera.main;
                 if (camera == null) continue;
                 var cameraTransform = camera.transform;

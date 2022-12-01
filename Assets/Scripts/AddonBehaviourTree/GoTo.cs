@@ -1,23 +1,23 @@
-﻿using BehaviorDesigner.Runtime;
-using BehaviorDesigner.Runtime.Tasks;
+﻿using BehaviorDesigner.Runtime.Tasks;
 using Library.Command;
+using UnityEngine;
 
 namespace AddonBehaviourTree
 {
     public class GoTo : Action
     {
         public SharedTank Tank;
-        public SharedVector3 Target;
+        public SharedZone Target;
 
         public override void OnStart()
         {
-            CommandManager.Instance.AddCommand(new MoveToCommand(Tank.Value, Target.Value));
+            Debug.Log(Target.Value.transform.position);
+            CommandManager.Instance.AddCommand(new MoveToCommand(Tank.Value, Target.Value.transform.position));
         }
 
         public override TaskStatus OnUpdate()
         {
-            
-            return TaskStatus.Running;
+            return Tank.Value.ArrivedAtDestination ? TaskStatus.Success : TaskStatus.Running;
         }
     }
 }

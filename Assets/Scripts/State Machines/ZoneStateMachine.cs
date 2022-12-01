@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using AddonBehaviourTree;
+using BehaviorDesigner.Runtime;
 using ScriptableObjects.Team;
 using ScriptableObjects.ZoneState;
 using UnityEngine;
@@ -36,6 +38,7 @@ namespace State_Machines
             TeamsTanksInZone = new Dictionary<TeamSO, int>();
             SubGStateInit();
             CurrentZState.StartState();
+            GlobalVariables.Instance.SetVariable("Zone1", (SharedZone)this);
         }
 
         private void SubGStateInit()

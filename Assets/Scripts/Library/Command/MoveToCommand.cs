@@ -15,7 +15,7 @@ namespace Library.Command
         
         public void Execute()
         {
-            // _tank.MoveTo()
+            _tank.GeneratePath(_target);
         }
     }
 }

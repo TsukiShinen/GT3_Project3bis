@@ -25,7 +25,7 @@ public class Tank : MonoBehaviour
     public float life;
 
     private float DistanceFromPositionToGo => Vector2.Distance(new Vector2(_positionToGo.x, _positionToGo.z), new Vector2(transform.position.x, transform.position.z));
-    private bool ArrivedAtWaypoint => DistanceFromPositionToGo < 0.5f;
+    public bool ArrivedAtWaypoint => DistanceFromPositionToGo < 0.5f;
     public bool ArrivedAtDestination => ArrivedAtWaypoint && _waypoints.Count == 0;
 
     public bool isMoving;
@@ -103,6 +103,11 @@ public class Tank : MonoBehaviour
         }
         isMoving = false;
         MoveTo(_positionToGo);
+    }
+
+    public void GeneratePath(Vector3 targetPosition)
+    {
+        SetPath(new Queue<Vector3>(tankParametersSO.PathFinding.FindPath(_transform.position, targetPosition)));
     }
 
     public void SetPath(Queue<Vector3> lstWaypoint)
