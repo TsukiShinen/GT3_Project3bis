@@ -1,4 +1,5 @@
-﻿using State_Machines;
+﻿using System.Linq;
+using State_Machines;
 using UnityEngine;
 
 namespace ScriptableObjects.ZoneState
@@ -44,9 +45,22 @@ namespace ScriptableObjects.ZoneState
             }
             else
             {
-                if (Machine.score <= gameParametersSo.timeTakeZone)
+                var team = Machine.TeamsTanksInZone.Keys.ToList()[0];
+                if (team == Machine.teamScoring)
                 {
-                    Machine.score += Time.deltaTime;
+                    if (Machine.score <= gameParametersSo.timeTakeZone)
+                    {
+                        Machine.score += Time.deltaTime;
+                    }
+                }
+                else
+                {
+                    Machine.score -= Time.deltaTime;
+                    if (Machine.score <= 0)
+                    {
+                        Machine.score = 0;
+                        Machine.teamScoring = team;
+                    }
                 }
             }
         
