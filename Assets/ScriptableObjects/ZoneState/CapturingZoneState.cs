@@ -45,9 +45,11 @@ namespace ScriptableObjects.ZoneState
                 else
                 {
                     Machine.score -= Time.deltaTime;
-                    if (!(Machine.score <= 0)) return;
-                    Machine.score = 0;
-                    Machine.teamScoring = team;
+                    if (!(Machine.score <= 0))
+                    {
+                        Machine.score = 0;
+                        Machine.teamScoring = team;
+                    }
                 }
             }
 
