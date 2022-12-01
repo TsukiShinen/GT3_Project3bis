@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using BehaviorDesigner.Runtime.Tasks.Unity.UnityGameObject;
+using System.Threading.Tasks;
 using State_Machines;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -23,7 +23,16 @@ namespace ScriptableObjects.GameState
         #region Methods   
         public override void StartState()
         {
-            //SceneManager.LoadScene("ScenePropreWola");
+            Machine.StartCoroutine(Initialise());
+        }
+
+        private IEnumerator Initialise()
+        {
+            Debug.Log("Start");
+            yield return SceneManager.LoadSceneAsync("ScenePropreWola");
+            
+            Debug.Log(SceneManager.GetActiveScene().name);
+            
             _mainCamera = Camera.main;
             gameManagerSo.Init();
         }
