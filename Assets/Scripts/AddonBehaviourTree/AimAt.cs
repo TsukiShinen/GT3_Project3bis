@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 using BehaviorDesigner.Runtime;
 using BehaviorDesigner.Runtime.Tasks;
@@ -21,12 +22,12 @@ namespace AddonBehaviourTree
 			if (!Tank.Value.tankMovement.mustTurn)
 				return TaskStatus.Success;
 
-			foreach (Tank enemyTank in Tank.Value.tankDetection.tanksInRange)
+			if (Tank.Value.tankDetection.tanksInRange.Any(enemyTank => enemyTank == Target.Value))
 			{
-				if (enemyTank == Target.Value)
-                    return TaskStatus.Running;
-            }
-
+				return TaskStatus.Running;
+			}
+			
+			Tank.Value.tankMovement.StopTurn();
             return TaskStatus.Failure;
         }
 	}

@@ -6,6 +6,7 @@ using System.Linq;
 
 public class SelectNextZone : Action
 {
+	public SharedTank tank;
 	public SharedZone zoneTarget;
 	public SharedListZone listZones;
 	
@@ -26,9 +27,13 @@ public class SelectNextZone : Action
                 }
             }
 		}
+		
+		var lst = listZones.Value.Where(z => (z.currentZState == State_Machines.EZoneState.CAPTURED && z.teamScoring != tank.Value.team)).ToList();
 
-		var lst = listZones.Value.Where(z => z.currentZState != State_Machines.EZoneState.CAPTURED).ToList();
-        zoneTarget.Value = lst[Random.Range(0, lst.Count - 1)];
+		if (lst.Count == 0) 
+			lst = listZones.Value.Where(z => z.currentZState != State_Machines.EZoneState.CAPTURED).ToList();
+		
+		zoneTarget.Value = lst[Random.Range(0, lst.Count - 1)];
 
 		return TaskStatus.Success;
 	}
