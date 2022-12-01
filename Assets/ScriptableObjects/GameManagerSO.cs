@@ -24,6 +24,7 @@ namespace ScriptableObjects
         public Vector3 CamPos;
         public Vector3 Tilt;
 
+        public bool isPlayer;
         public void Init()
         {
             timer = gameParametersSo.gameTimer;
@@ -43,17 +44,23 @@ namespace ScriptableObjects
                 var tankObject = Instantiate(tankPrefab, spawnTeam1.transform.position + spawnTeam1.transform.right * 3 * i, spawnTeam1.transform.rotation);
                 tankObject.GetComponent<Tank>().InitialLoad(team1.TankList[i], team1, this);
 
-                if (i > 0) continue;
-                tankPlayer = tankObject.GetComponent<Tank>();
-                tankPlayer.tankParametersSO.PathFinding = null;
-                tankPlayer.GetComponent<BehaviorTree>().enabled = false;
                 var camera = Camera.main;
                 if (camera == null) continue;
                 var cameraTransform = camera.transform;
-                cameraTransform.SetParent(tankObject.transform);
-                cameraTransform.localPosition = CamPos;
-                cameraTransform.localRotation = Quaternion.Euler(Tilt);
 
+                if (i == 0 )
+                {
+                    if (isPlayer)
+                    {
+                        tankPlayer = tankObject.GetComponent<Tank>();
+                        tankPlayer.tankParametersSO.PathFinding = null;
+                        tankPlayer.GetComponent<BehaviorTree>().enabled = false;
+                    }
+                    cameraTransform.SetParent(tankObject.transform);
+                    cameraTransform.localPosition = CamPos;
+                    cameraTransform.localRotation = Quaternion.Euler(Tilt);
+
+                }
             }
 
             for (var i = 0; i < team2.TankList.Count; i++)

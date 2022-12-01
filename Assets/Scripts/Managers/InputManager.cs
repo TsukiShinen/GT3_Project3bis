@@ -9,6 +9,8 @@ public class InputManager : Singleton<MonoBehaviour>
     
     protected override void Update()
     {
+        if (gameManagerSo.tankPlayer == null) return;
+
         if (Input.GetButton("Fire"))
         {
             CommandManager.Instance.AddCommand(new FireCommand(gameManagerSo.tankPlayer));
