@@ -76,6 +76,13 @@ namespace State_Machines
 
             var tank = other.GetComponent<Tank>();
 
+            AddTankToDict(tank);
+
+            tank.OnDeath += RemoveTankFromDict;
+        }
+
+        private void AddTankToDict(Tank tank)
+        {
             if (TeamsTanksInZone.ContainsKey(tank.team))
             {
                 TeamsTanksInZone[tank.team]++;
@@ -84,23 +91,29 @@ namespace State_Machines
             {
                 TeamsTanksInZone.Add(tank.team, 1);
             }
+            tank.OnDeath -= RemoveTankFromDict;
         }
+
         private void OnTriggerExit(Collider other)
         {
             if (!other.CompareTag("Tank")) return;
 
             var tank = other.GetComponent<Tank>();
 
-            if (TeamsTanksInZone.ContainsKey(tank.team))
-            {
-                TeamsTanksInZone[tank.team]--;
+            RemoveTankFromDict(tank);
+        }
 
-                if (TeamsTanksInZone[tank.team] == 0)
-                {
-                    TeamsTanksInZone.Remove(tank.team);
-                }
+        private void RemoveTankFromDict(Tank tank)
+        {
+            if (!TeamsTanksInZone.ContainsKey(tank.team)) return;
+            TeamsTanksInZone[tank.team]--;
+
+            if (TeamsTanksInZone[tank.team] == 0)
+            {
+                TeamsTanksInZone.Remove(tank.team);
             }
         }
+
         #endregion
     }
 

@@ -8,6 +8,10 @@ using UnityEngine.UI;
 
 public class Tank : MonoBehaviour
 {
+    public delegate void EventDeath(Tank tank);
+
+    public EventDeath OnDeath;
+    
     #region Variables
 
     [SerializeField] private GameObject tankMesh;
@@ -238,6 +242,7 @@ public class Tank : MonoBehaviour
 
     public void Death()
     {
+        OnDeath?.Invoke(this);
         _gameManager.TankDeath(this);
         audioSO.PlaySFX("tank_explode");
     }
