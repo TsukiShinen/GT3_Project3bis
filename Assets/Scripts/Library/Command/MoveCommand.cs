@@ -13,7 +13,7 @@ namespace Library.Command
 
         public void Execute()
         {
-            _tank.Move(_direction);
+            _tank.tankMovement.Move(_direction);
         }
     }
 }

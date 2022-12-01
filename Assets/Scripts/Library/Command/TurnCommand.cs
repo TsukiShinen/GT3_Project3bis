@@ -15,7 +15,7 @@ namespace Library.Command
 
         public void Execute()
         {
-            _tank.Turn(90 * Mathf.Sign(_horizontalDirection));
+            _tank.tankMovement.Turn(90 * Mathf.Sign(_horizontalDirection));
         }
     }
 }

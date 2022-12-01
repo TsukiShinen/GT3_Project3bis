@@ -91,7 +91,6 @@ namespace State_Machines
             {
                 TeamsTanksInZone.Add(tank.team, 1);
             }
-            tank.OnDeath -= RemoveTankFromDict;
         }
 
         private void OnTriggerExit(Collider other)
@@ -101,6 +100,8 @@ namespace State_Machines
             var tank = other.GetComponent<Tank>();
 
             RemoveTankFromDict(tank);
+
+            tank.OnDeath -= RemoveTankFromDict;
         }
 
         private void RemoveTankFromDict(Tank tank)

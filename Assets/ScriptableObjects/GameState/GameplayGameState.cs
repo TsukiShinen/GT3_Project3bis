@@ -31,10 +31,7 @@ namespace ScriptableObjects.GameState
 
         private IEnumerator Initialise()
         {
-            Debug.Log("Start");
             yield return SceneManager.LoadSceneAsync("ScenePropreWola");
-            
-            Debug.Log(SceneManager.GetActiveScene().name);
             
             _mainCamera = Camera.main;
             gameManagerSo.Init();

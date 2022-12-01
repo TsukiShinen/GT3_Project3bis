@@ -33,6 +33,8 @@ namespace ScriptableObjects
         [SerializeField] private float specialJumpCooldown;
         public float SpecialJumpCooldown => specialJumpCooldown;
 
+        [SerializeField] private float detectionRadius;
+        public float DetectionRadius => detectionRadius;
 
         /*
     Scale

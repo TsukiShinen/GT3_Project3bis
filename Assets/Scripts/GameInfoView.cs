@@ -23,6 +23,7 @@ public class GameInfoView : MonoBehaviour
     {
         textTimer.text = Math.Floor(gameManagerSo.timer).ToString();
         progressbarTimer.fillAmount = gameManagerSo.timer / gameManagerSo.gameParametersSo.gameTimer;
+        if (gameManagerSo.Scores == null) return;
         team1Score.fillAmount = gameManagerSo.Scores[gameManagerSo.team1] / 100f;
         team2Score.fillAmount = gameManagerSo.Scores[gameManagerSo.team2] / 100f;
     }

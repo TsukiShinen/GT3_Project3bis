@@ -11,7 +11,7 @@ namespace Library.Command
 
         public void Execute()
         {
-            _tank.Shoot();
+            _tank.tankActions.Shoot();
         }
     }
 }

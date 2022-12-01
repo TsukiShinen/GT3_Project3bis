@@ -18,7 +18,6 @@ namespace ScriptableObjects.ZoneState
         #region Methods   
         public override void StartState()
         {
-            Debug.Log("Capturing");
         }
 
         public override void UpdateState()

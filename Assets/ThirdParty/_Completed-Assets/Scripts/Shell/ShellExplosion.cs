@@ -15,10 +15,8 @@ namespace Complete
 
         private void Start ()
         {
-            // If it isn't destroyed by then, destroy the shell after it's lifetime.
             Destroy (gameObject, m_MaxLifeTime);
         }
-
 
         private void OnTriggerEnter (Collider other)
         {
@@ -27,8 +25,7 @@ namespace Complete
 
             for (int i = 0; i < colliders.Length; i++)
             {
-                Debug.Log(colliders[i].gameObject.name);
-                Tank targetHealth = colliders[i].gameObject.GetComponent<Tank> ();
+                Tank targetHealth = colliders[i].gameObject.GetComponent<Tank>();
 
                 if (!targetHealth)
                     continue;

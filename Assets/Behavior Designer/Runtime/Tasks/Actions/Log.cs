@@ -13,12 +13,6 @@ namespace BehaviorDesigner.Runtime.Tasks
         
         public override TaskStatus OnUpdate()
         {
-            // Log the text and return success
-            if (logError.Value) {
-                Debug.LogError(text);
-            } else {
-                Debug.Log(text);
-            }
             return TaskStatus.Success;
         }
 
