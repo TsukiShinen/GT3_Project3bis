@@ -7,7 +7,7 @@ public class SetIaOrPlayer : MonoBehaviour
     [SerializeField] GameManagerSO gamemanager;
     private void Start()
     {
-        gamemanager.isPlayer = dropdown.value == 1;
+        dropdown.value = gamemanager.isPlayer ? 1 : 0;
     }
     public void SetIaPlayer() {
         gamemanager.isPlayer = dropdown.value == 1;

@@ -79,9 +79,11 @@ public class Grid : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        if (!EnableGizmos) { return; }
+        Gizmos.color = Color.black;
         Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x, 1, gridWorldSize.y));
 
+        if (!EnableGizmos) { return; }
+        
         if (_grid == null) return;
         foreach (var n in _grid)
         {
