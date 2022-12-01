@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using BehaviorDesigner.Runtime;
 using ScriptableObjects.Team;
+using State_Machines;
 using UnityEngine;
 
 namespace ScriptableObjects
@@ -66,6 +67,13 @@ namespace ScriptableObjects
         public void TankDeath(Tank tank)
         {
             tankToDeSpawn.Add(tank);
+        }
+
+        public void AddScore(TeamSO team, int amount)
+        {
+            Scores[team] += amount;
+            if (Scores[team] >= gameParametersSo.maxScore)
+                GameStateMachine.Instance.ChangeState(EGameState.END);
         }
     }
 }

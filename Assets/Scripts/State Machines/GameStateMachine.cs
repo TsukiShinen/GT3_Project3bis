@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using Library;
 using ScriptableObjects.GameState;
 using UnityEngine;
 
 namespace State_Machines
 {
-    public class GameStateMachine : MonoBehaviour
+    public class GameStateMachine : Singleton<GameStateMachine>
     {
         #region fields
         [SerializeField] private List<GameState> lstGStates;
@@ -72,6 +73,7 @@ namespace State_Machines
         START,
         MENU,
         GAMEPLAY,
+        END,
         NONE
     }
 }

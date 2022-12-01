@@ -12,6 +12,8 @@ namespace ScriptableObjects.GameState
     {
         #region Fields
         [SerializeField] private GameManagerSO gameManagerSo;
+        [SerializeField] private GameParametersSO gameParametersSo;
+
 
         private Camera _mainCamera;
         #endregion
@@ -24,6 +26,7 @@ namespace ScriptableObjects.GameState
         public override void StartState()
         {
             Machine.StartCoroutine(Initialise());
+            Machine.StartCoroutine(Timer());
         }
 
         private IEnumerator Initialise()
@@ -35,6 +38,13 @@ namespace ScriptableObjects.GameState
             
             _mainCamera = Camera.main;
             gameManagerSo.Init();
+        }
+
+        private IEnumerator Timer()
+        {
+            yield return new WaitForSecondsRealtime(gameParametersSo.gameTimer);
+            
+            Machine.ChangeState(EGameState.END);
         }
 
         public override void UpdateState()
