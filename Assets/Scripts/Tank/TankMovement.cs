@@ -127,13 +127,22 @@ public class TankMovement : MonoBehaviour
         if (tank.isDead) return;
 
         var direction = target.position - transform.position;
-
-        var angle = Vector2.SignedAngle(direction, new Vector2(transform.forward.x, transform.forward.z));
-
+        
+        var angle = Vector2.SignedAngle(new Vector2(direction.x, direction.y), new Vector2(transform.forward.x, transform.forward.z));
+        Debug.Log("=======");
+        Debug.Log(direction);
+        Debug.Log(new Vector2(transform.forward.x, transform.forward.z));
+        Debug.Log(angle);
         Turn(angle);
 
         if(Mathf.Approximately(angle, 0))
             mustTurn = false;
+    }
+
+    internal void ClearPath()
+    {
+        _waypoints.Clear();
+        Debug.Log(_waypoints.Count);
     }
 
     #endregion

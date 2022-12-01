@@ -12,6 +12,7 @@ namespace AddonBehaviourTree
 
         public override void OnStart()
 		{
+			Debug.Log(Target.Value);
 			CommandManager.Instance.AddCommand(new TurnToCommand(Tank.Value, Target.Value.transform));
         }
 
@@ -20,7 +21,13 @@ namespace AddonBehaviourTree
 			if (!Tank.Value.tankMovement.mustTurn)
 				return TaskStatus.Success;
 
-            return TaskStatus.Running;
+			foreach (Tank enemyTank in Tank.Value.tankDetection.tanksInRange)
+			{
+				if (enemyTank == Target.Value)
+                    return TaskStatus.Running;
+            }
+
+            return TaskStatus.Failure;
         }
 	}
 }
