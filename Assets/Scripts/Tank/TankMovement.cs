@@ -73,7 +73,6 @@ public class TankMovement : MonoBehaviour
 
     public void MoveTo(Vector3 pTarget)
     {
-        Debug.Log(_waypoints.Count);
         if (tank.isDead) return;
 
         if (DistanceFromPositionToGo < 0.1f) { return; }

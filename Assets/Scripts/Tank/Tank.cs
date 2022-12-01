@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using DefaultNamespace;
 using ScriptableObjects;
 using ScriptableObjects.Team;
 using UnityEngine;
@@ -19,6 +20,7 @@ public class Tank : MonoBehaviour
     public TankMovement tankMovement;
     public TankActions tankActions;
     public TankDetection tankDetection;
+    public TankBulletDetection tankBulletDetection;
     private GameManagerSO _gameManager;
     public TankParametersSO tankParametersSO;
     public AudioSO audioSO;
@@ -33,7 +35,7 @@ public class Tank : MonoBehaviour
 
     public bool canShoot = true;
     public bool canJump = true;
-    public bool isJumping = false;
+    public bool isJumping;
     public bool isDead;
 
     public delegate void EventDeath(Tank tank);
