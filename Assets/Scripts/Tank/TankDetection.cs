@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,6 +13,11 @@ public class TankDetection : MonoBehaviour
     public void Init()
     {
         detectionZone.radius = tank.tankParametersSO.DetectionRadius;
+    }
+
+    private void OnDisable()
+    {
+        tanksInRange.Clear();
     }
 
     private void OnTriggerEnter(Collider other)

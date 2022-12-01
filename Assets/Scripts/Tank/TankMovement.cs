@@ -1,13 +1,6 @@
-using Complete;
-using ScriptableObjects;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using static UnityEngine.GraphicsBuffer;
-using UnityEngine.UIElements;
-using System;
-using System.Runtime.CompilerServices;
 
 public class TankMovement : MonoBehaviour
 {
@@ -80,6 +73,7 @@ public class TankMovement : MonoBehaviour
 
     public void MoveTo(Vector3 pTarget)
     {
+        Debug.Log(_waypoints.Count);
         if (tank.isDead) return;
 
         if (DistanceFromPositionToGo < 0.1f) { return; }
@@ -129,20 +123,26 @@ public class TankMovement : MonoBehaviour
         var direction = new Vector2(target.position.x, target.position.z) - new Vector2(transform.position.x, transform.position.z);
 
         var angle = Vector2.SignedAngle(direction, new Vector2(transform.forward.x, transform.forward.z));
-        Debug.Log("=======");
-        Debug.Log(direction);
-        Debug.Log(new Vector2(transform.forward.x, transform.forward.z));
-        Debug.Log(angle);
-        Turn(angle);
 
-        if(Mathf.Abs(angle) > 2f)
+        if (Mathf.Abs(angle) > 2f)
+        {
+            Turn(angle);
+        }
+        else
+        {
             mustTurn = false;
+        }
     }
 
-    internal void ClearPath()
+    public void ClearPath()
     {
         _waypoints.Clear();
-        Debug.Log(_waypoints.Count);
+        _positionToGo = transform.position;
+    }
+
+    public void StopTurn()
+    {
+        mustTurn = false;
     }
 
     #endregion
