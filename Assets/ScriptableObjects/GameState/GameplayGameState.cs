@@ -78,6 +78,7 @@ namespace ScriptableObjects.GameState
             tankTransform.rotation = tank.spawnRotation;
 
             tank.life = tank.tankParametersSO.MaxLife;
+            tank.tankMesh.transform.rotation = Quaternion.Euler(0, 0, 0);
             tank.SetHealthUI();
 
             tank.canShoot = true;
