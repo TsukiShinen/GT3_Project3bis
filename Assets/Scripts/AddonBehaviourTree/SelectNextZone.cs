@@ -21,7 +21,8 @@ public class SelectNextZone : Action
 		{
 			if (zoneTarget.Value!= null)
 			{
-                if (zoneTarget.Value.currentZState != State_Machines.EZoneState.CAPTURED)
+                if (zoneTarget.Value.currentZState != State_Machines.EZoneState.CAPTURED || 
+					(zoneTarget.Value.currentZState == State_Machines.EZoneState.CAPTURED && zoneTarget.Value.teamScoring != tank.Value.team))
                 {
                     return TaskStatus.Success;
                 }
