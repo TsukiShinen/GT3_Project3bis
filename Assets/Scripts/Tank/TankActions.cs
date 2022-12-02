@@ -2,6 +2,7 @@ using ScriptableObjects;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TankActions: MonoBehaviour
 {
@@ -11,11 +12,39 @@ public class TankActions: MonoBehaviour
     [SerializeField] private GameObject _completeShell;
     public Transform shootSocket;
 
+
+    private float _shootCooldownView;
+    private float _specialJumpCooldownView;
     #endregion
 
     public void Init()
     {
+        _shootCooldownView = tank.tankParametersSO.ShootCooldown;
+        _specialJumpCooldownView = tank.tankParametersSO.SpecialJumpCooldown;
+    }
 
+    private void Update()
+    {
+        if (_shootCooldownView <= tank.tankParametersSO.ShootCooldown)
+        {
+            _shootCooldownView += Time.deltaTime;
+            SetShootCooldownUi();
+        }
+        if (_specialJumpCooldownView <= tank.tankParametersSO.SpecialJumpCooldown)
+        {
+            _specialJumpCooldownView += Time.deltaTime;
+            SetspecialJumpCoolCooldownUi();
+        }
+    }
+
+    public void SetShootCooldownUi()
+    {
+        tank.gameManager.shootCooldownImage.fillAmount = _shootCooldownView / tank.tankParametersSO.ShootCooldown;
+    }
+
+    public void SetspecialJumpCoolCooldownUi()
+    {
+        tank.gameManager.specialJumpCooldownImage.fillAmount = _specialJumpCooldownView / tank.tankParametersSO.SpecialJumpCooldown;
     }
 
     public void Shoot()
@@ -29,6 +58,8 @@ public class TankActions: MonoBehaviour
     private IEnumerator ShootCoroutine()
     {
         tank.canShoot = false;
+
+        _shootCooldownView = 0f;
 
         tank.audioSO.PlaySFX("shoot");
 
@@ -57,6 +88,7 @@ public class TankActions: MonoBehaviour
     {
         tank.isJumping = true;
         tank.canJump = false;
+        _specialJumpCooldownView = 0f;
         float startTime = Time.time;
         Vector3 holdPosition = transform.position;
         float angle = 360f / (tank.tankParametersSO.SpecialJump[tank.tankParametersSO.SpecialJump.length - 1].time * 2);
@@ -71,7 +103,7 @@ public class TankActions: MonoBehaviour
 
         tank.tankMesh.transform.localRotation = Quaternion.Euler(0, tank.tankMesh.transform.localRotation.y, tank.tankMesh.transform.localRotation.z);
         tank.isJumping = false;
-        yield return new WaitForSeconds(tank.tankParametersSO.SpecialJumpCooldown);
+        yield return new WaitForSeconds(tank.tankParametersSO.SpecialJumpCooldown - tank.tankParametersSO.SpecialJump[tank.tankParametersSO.SpecialJump.length - 1].time * 2);
         tank.canJump = true;
     }
 }

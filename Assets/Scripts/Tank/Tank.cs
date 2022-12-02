@@ -21,7 +21,7 @@ public class Tank : MonoBehaviour
     public TankActions tankActions;
     public TankDetection tankDetection;
     public TankBulletDetection tankBulletDetection;
-    private GameManagerSO _gameManager;
+    public GameManagerSO gameManager;
     public TankParametersSO tankParametersSO;
     public AudioSO audioSO;
 
@@ -40,7 +40,7 @@ public class Tank : MonoBehaviour
 
     public delegate void EventDeath(Tank tank);
     public EventDeath OnDeath;
-
+    
     #endregion
 
     public void InitialLoad(TankParametersSO pTankParametersSo, TeamSO pTeam, GameManagerSO pGameManagerSo)
@@ -48,9 +48,9 @@ public class Tank : MonoBehaviour
         tankParametersSO = Instantiate(pTankParametersSo);
         life = pTankParametersSo.MaxLife;
         team = pTeam;
-        _gameManager = pGameManagerSo;
+        gameManager = pGameManagerSo;
 
-        if(_gameManager.gameParametersSo.funMode)
+        if(gameManager.gameParametersSo.funMode)
         {
             float random = Random.Range(tankParametersSO.MinSize, tankParametersSO.MaxSize);
             tankMesh.transform.localScale = new Vector3(Random.Range(tankParametersSO.MinSize, tankParametersSO.MaxSize), Random.Range(tankParametersSO.MinSize, tankParametersSO.MaxSize), Random.Range(tankParametersSO.MinSize, tankParametersSO.MaxSize));
@@ -101,7 +101,7 @@ public class Tank : MonoBehaviour
     public void Death()
     {
         OnDeath?.Invoke(this);
-        _gameManager.TankDeath(this);
+        gameManager.TankDeath(this);
         audioSO.PlaySFX("tank_explode");
     }
 }

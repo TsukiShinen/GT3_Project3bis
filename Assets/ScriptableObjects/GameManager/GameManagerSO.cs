@@ -4,6 +4,7 @@ using ScriptableObjects.PathFinding;
 using ScriptableObjects.Team;
 using State_Machines;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace ScriptableObjects
 {
@@ -23,6 +24,10 @@ namespace ScriptableObjects
         public TeamSO team2;
 
         [SerializeField] private GameObject tankPrefab;
+
+        public Image shootCooldownImage;
+        public Image specialJumpCooldownImage;
+
         public Vector3 CamPos;
         public Vector3 Tilt;
 
@@ -40,6 +45,8 @@ namespace ScriptableObjects
             var spawnTeam1 = GameObject.FindGameObjectWithTag("SpawnTeam1");
             var spawnTeam2 = GameObject.FindGameObjectWithTag("SpawnTeam2");
 
+            var shootImage = Instantiate(shootCooldownImage);
+            var jumpImage = Instantiate(specialJumpCooldownImage);
             for (var i = 0; i < team1.TankList.Count; i++)
             {
                 
