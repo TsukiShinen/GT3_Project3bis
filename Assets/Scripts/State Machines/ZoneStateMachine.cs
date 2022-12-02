@@ -83,7 +83,7 @@ namespace State_Machines
         {
             if (!other.CompareTag("Tank")) return;
 
-            var tank = other.GetComponent<Tank>();
+            var tank = other.GetComponentInParent<Tank>();
 
             AddTankToDict(tank);
 
@@ -106,7 +106,7 @@ namespace State_Machines
         {
             if (!other.CompareTag("Tank")) return;
 
-            var tank = other.GetComponent<Tank>();
+            var tank = other.GetComponentInParent<Tank>();
 
             RemoveTankFromDict(tank);
 

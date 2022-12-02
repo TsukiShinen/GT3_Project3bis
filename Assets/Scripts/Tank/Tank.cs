@@ -78,7 +78,6 @@ public class Tank : MonoBehaviour
     private void Awake()
     {
         tankRigidbody = gameObject.GetComponent<Rigidbody>();
-        audioSO.Play("tank_moving");
     }
 
     public void TakeDamage(float amount)

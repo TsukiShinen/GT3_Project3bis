@@ -32,7 +32,6 @@ namespace ScriptableObjects.ZoneState
         
             if (Machine.TeamsTanksInZone.Count == 0)
             {
-                Debug.Log("minus");
                 Machine.score -= Time.deltaTime / 2f;
             }
             else

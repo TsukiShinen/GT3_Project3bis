@@ -9,7 +9,7 @@ public class TankActions: MonoBehaviour
 
     [SerializeField] private Tank tank;
     [SerializeField] private GameObject _completeShell;
-    [SerializeField] private Transform _shootSocket;
+    public Transform shootSocket;
 
     #endregion
 
@@ -32,13 +32,13 @@ public class TankActions: MonoBehaviour
 
         tank.audioSO.PlaySFX("shoot");
 
-        var bullet = Instantiate(_completeShell, _shootSocket);
+        var bullet = Instantiate(_completeShell, shootSocket);
 
         bullet.transform.SetParent(null);
 
         var rbBullet = bullet.GetComponent<Rigidbody>();
 
-        rbBullet.velocity = tank.tankParametersSO.ProjectileSpeed * _shootSocket.forward;
+        rbBullet.velocity = tank.tankParametersSO.ProjectileSpeed * shootSocket.forward;
 
         yield return new WaitForSeconds(tank.tankParametersSO.ShootCooldown);
 
@@ -60,6 +60,7 @@ public class TankActions: MonoBehaviour
         float startTime = Time.time;
         Vector3 holdPosition = transform.position;
         float angle = 360f / (tank.tankParametersSO.SpecialJump[tank.tankParametersSO.SpecialJump.length - 1].time * 2);
+        tank.audioSO.PlaySFX("jump");
 
         while (Time.time - startTime < tank.tankParametersSO.SpecialJump[tank.tankParametersSO.SpecialJump.length - 1].time * 2)
         {

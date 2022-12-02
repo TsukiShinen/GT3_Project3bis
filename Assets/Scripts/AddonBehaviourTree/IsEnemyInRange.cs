@@ -23,12 +23,10 @@ namespace AddonBehaviourTree
 
                 if (Physics.Raycast(start, dir, out hit, Mathf.Infinity))
                 {
-                    Debug.Log(hit.collider.name);
-                    Debug.DrawRay(start, dir, Color.red);
                     if (!hit.collider.CompareTag("Tank")) continue;
                     
                     Tank.Value.tankMovement.ClearPath();
-                    Target.Value = hit.collider.gameObject.GetComponent<Tank>();
+                    Target.Value = hit.collider.gameObject.GetComponentInParent<Tank>();
                     return TaskStatus.Success;
                 }
             }

@@ -25,7 +25,7 @@ namespace Complete
 
             for (int i = 0; i < colliders.Length; i++)
             {
-                Tank targetHealth = colliders[i].gameObject.GetComponent<Tank>();
+                Tank targetHealth = colliders[i].gameObject.GetComponentInParent<Tank>();
 
                 if (!targetHealth)
                     continue;

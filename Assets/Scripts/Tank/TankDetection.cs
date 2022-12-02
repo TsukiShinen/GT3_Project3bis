@@ -24,7 +24,7 @@ public class TankDetection : MonoBehaviour
     {
         if (!other.CompareTag("Tank")) return;
 
-        var t = other.GetComponent<Tank>();
+        var t = other.GetComponentInParent<Tank>();
 
         if (t.team == tank.team) return;
 
@@ -37,7 +37,7 @@ public class TankDetection : MonoBehaviour
     {
         if (!other.CompareTag("Tank")) return;
 
-        var t = other.GetComponent<Tank>();
+        var t = other.GetComponentInParent<Tank>();
 
         RemoveTankFromList(t);
 

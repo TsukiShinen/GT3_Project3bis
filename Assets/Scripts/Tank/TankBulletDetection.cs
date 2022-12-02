@@ -17,9 +17,7 @@ namespace DefaultNamespace
 
         private void OnTriggerEnter(Collider other)
         {
-            Debug.Log(other.tag);
             if (!other.CompareTag("Bullet")) return;
-            Debug.Log("DETECT");
 
             StartCoroutine(DetectBullet());
         }

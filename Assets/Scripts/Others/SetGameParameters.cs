@@ -4,13 +4,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class SetGameParameters : MonoBehaviour
 {
     [SerializeField] private List<PathFindingSO> allPathFinding;
     
-    [SerializeField] private Dropdown dropdownPlayerOrAI;
-    [SerializeField] private Dropdown dropdownAlgo;
+    [SerializeField] private TMP_Dropdown dropdownPlayerOrAI;
+    [SerializeField] private TMP_Dropdown dropdownAlgo;
     [SerializeField] private Toggle toggleFunMode;
 
     [SerializeField] private TankParametersSO tankParametersSO;
@@ -23,7 +24,7 @@ public class SetGameParameters : MonoBehaviour
         dropdownAlgo.ClearOptions();
         for (int i = 0; i < allPathFinding.Count; i++)
         {
-            var newOoption = new Dropdown.OptionData();
+            var newOoption = new TMP_Dropdown.OptionData();
             newOoption.text = allPathFinding[i].name;
             dropdownAlgo.options.Add(newOoption);
 

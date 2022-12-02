@@ -15,7 +15,6 @@ namespace AddonBehaviourTree
 
 		public override TaskStatus OnUpdate()
 		{
-			Debug.Log(tank.Value);
 			return !tank.Value.isJumping ? TaskStatus.Success : TaskStatus.Running;
 		}
 	}

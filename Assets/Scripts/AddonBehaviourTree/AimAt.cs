@@ -13,7 +13,6 @@ namespace AddonBehaviourTree
 
         public override void OnStart()
 		{
-			Debug.Log(Target.Value);
 			CommandManager.Instance.AddCommand(new TurnToCommand(Tank.Value, Target.Value.transform));
         }
 
